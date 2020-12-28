@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sankey Diagram with SVG</title>
+</head>
+<body>
+
+<svg width="800" height="800">
+
+  <rect x="0" y="0" width="50" height="150" style="fill:blue;" />
+  <rect x="0" y="150" width="50" height="100" style="fill:green;" />
+  <rect x="0" y="250" width="50" height="70" style="fill:red;" />
+
+  <rect x="300" y="0" width="50" height="100" style="fill:blue;" />
+  <rect x="300" y="100" width="50" height="170" style="fill:green;" />
+  <rect x="300" y="270" width="50" height="50" style="fill:red;" />
+<!-- 
+  <path d="
+  	M 50 0 
+  	L 300 0 
+  	L 300 100 
+  	L 50 150 
+  	Z
+	" style="fill:blue;opacity:0.3;"/>
+ -->
+
+<path id="polygone" d="
+  	M 50 150 
+  	L 300 100 
+  	L 300 270 
+  	L 50 250 
+  	Z
+	" style="fill:green;opacity:0.3;"/>
+
+  <path id="bezier" d="
+  	M 50 150 
+  	C 150 150 
+  	200 100 
+  	300 100
+ 	L 300 270
+ 	C 200 270
+ 	150 250
+ 	50 250
+ 	Z 
+  	" style="stroke:red;stroke-width:1;fill:red;opacity:0.3;"/>
+
+  <g stroke="black" fill="black">
+    <circle id="pointA" cx="50" cy="150" r="3" />
+    <circle id="pointB" cx="300" cy="100" r="3" />
+    <circle id="curveA" cx="150" cy="150" r="3" />
+    <circle id="curveB" cx="200" cy="100" r="3" />
+  </g>
+  
+</svg>
+
+<p>
+https://css-tricks.com/svg-path-syntax-illustrated-guide/
+</p>
+</body>
+</html>
