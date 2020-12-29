@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sankey Diagram with SVG</title>
+</head>
+<body>
+
+<!-- 
+        Survived
+Pclass  No  Yes Sum
+1st     80  136 216
+2nd     97   87 184
+3rd     372 119 491
+Sum     549 342 891
+ -->
+
+
+<svg width="800" height="1000" >
+
+<!-- Pclass -->  
+  <rect id="1st" x="0" y="0" width="50" height="216" style="fill:blue;" />
+  <rect id="2nd" x="0" y="216" width="50" height="184" style="fill:green;" />
+  <rect id="3rn" x="0" y="400" width="50" height="491" style="fill:red;" />
+
+<!-- Survived -->
+  <rect id="No"  x="300" y="0" width="50" height="549" style="fill:yellow;" />
+  <rect id="Yes" x="300" y="549" width="50" height="342" style="fill:purple;" />
+
+<!-- 1st -->
+<path id="1st-No-80" d="
+  	M 50 0 
+  	L 300 0 
+  	L 300 80 
+  	L 50 80 
+  	Z
+	" style="fill:grey;opacity:0.3;"/>
+
+<path id="1st-Yes-136" d="
+  	M 50 80 
+  	L 300 549 
+  	L 300 685 
+  	L 50 216 
+  	Z
+	" style="fill:grey;opacity:0.3;"/>
+
+<path id="2st-No-97" d="
+  	M 50 216 
+  	L 300 80 
+  	L 300 177 
+  	L 50 313 
+  	Z
+	" style="fill:grey;opacity:0.3;"/>
+
+<path id="2st-Yes-87" d="
+  	M 50 313 
+  	L 300 685 
+  	L 300 772 
+  	L 50 400 
+  	Z
+	" style="fill:grey;opacity:0.3;"/>
+
+<path id="3rn-No-372" d="
+  	M 50 400 
+  	L 300 177 
+  	L 300 549 
+  	L 50 772 
+  	Z
+	" style="fill:grey;opacity:0.3;"/>
+
+<path id="3rn-Yes-119" d="
+  	M 50 772 
+  	L 300 772 
+  	L 300 891 
+  	L 50 891 
+  	Z
+	" style="fill:grey;opacity:0.3;"/>
+
+  
+</svg>
+
+</body>
+</html>
