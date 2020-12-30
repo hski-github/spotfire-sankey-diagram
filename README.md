@@ -15,5 +15,6 @@ First steps in creating a Spotfire mods visualization for Sankey diagram resp. A
 
 ## References
 - https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html
+- http://www.datasmith.org/2020/05/02/alluvial-plots-vs-sankey-diagrams/
 - https://stackoverflow.com/questions/4545254/sankey-diagram-in-javascript
 - https://developers.google.com/chart/interactive/docs/gallery/sankey
