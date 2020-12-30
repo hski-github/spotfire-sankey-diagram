@@ -65,7 +65,7 @@ Spotfire.initialize(async (mod) => {
 		]);
 
 		// Sets chart options.
-		var options = { width: 600, height: 200 };
+		var options = {  };
 
 		// Instantiates and draws our chart, passing in some options.
 		var chart = new google.visualization.Sankey(document.getElementById('mod-container'));
