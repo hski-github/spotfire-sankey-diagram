@@ -55,15 +55,22 @@ Spotfire.initialize(async (mod) => {
 		data.addColumn('string', 'From');
 		data.addColumn('string', 'To');
 		data.addColumn('number', 'Weight');
-		data.addRows([
-	      [ 'A', 'X', 5 ],
-	      [ 'A', 'Y', 7 ],
-	      [ 'A', 'Z', 6 ],
-	      [ 'B', 'X', 2 ],
-	      [ 'B', 'Y', 9 ],
-	      [ 'B', 'Z', 4 ]
-		]);
 
+		rows.forEach(function(row){
+			var barvalue = Number(row.continuous("Y").value());
+			var path = row.categorical("X").value();
+			
+			var path1;
+			var path2;
+			if ( path.length == 2 ){
+				path1 = path[0].formattedValue() + " (From)";
+				path2 = path[1].formattedValue() + " (To)";
+			}
+			data.addRows([
+		      [ path1, path2, barvalue ]
+			]);	
+		});
+		
 		// Sets chart options.
 		var options = {  };
 
