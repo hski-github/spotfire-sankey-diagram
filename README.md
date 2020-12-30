@@ -1,5 +1,16 @@
 # spotfire-sankey-visualization
-Spotfire mods visualization for Sankey diagram
+
+First steps in creating a Spotfire mods visualization for Sankey diagram. Currently using Google Charts Sankey diagram.
+
+[![ScreenShot](/screenshots/screenshot-spotfire-sankey-google-charts_thumbnail.png?raw=true)](/screenshots/screenshot-spotfire-sankey-google-charts.png?raw=true)
+
+## Known Limitations 
+
+- No same values on both axis, therefore adding suffix "(From)" and "(To).
+- Only two axis
+- No control of coloring
+- No support for marking 
+- No control over sorting
 
 
 ## References
