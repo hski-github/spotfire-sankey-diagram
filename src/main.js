@@ -1,11 +1,3 @@
-/*
- * Copyright © 2020. TIBCO Software Inc.
- * This file is subject to the license terms contained
- * in the license file that is distributed with this file.
- */
-
-//@ts-check - Get type warnings from the TypeScript language server. Remove if not wanted.
-
 /**
  * Get access to the Spotfire Mod API by providing a callback to the initialize method.
  * @param {Spotfire.Mod} mod - mod api
@@ -58,10 +50,30 @@ Spotfire.initialize(async (mod) => {
         /**
          * Print out to document
          */
-        const container = document.querySelector("#mod-container");
-        container.textContent = `windowSize: ${windowSize.width}x${windowSize.height}\r\n`;
-        container.textContent += `should render: ${rows.length} rows\r\n`;
-        container.textContent += `${prop.name}: ${prop.value()}`;
+		google.charts.load('current', {'packages':['sankey']});
+		google.charts.setOnLoadCallback(drawChart);
+
+		function drawChart() {
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'From');
+			data.addColumn('string', 'To');
+			data.addColumn('number', 'Weight');
+			data.addRows([
+		      [ 'A', 'X', 5 ],
+		      [ 'A', 'Y', 7 ],
+		      [ 'A', 'Z', 6 ],
+		      [ 'B', 'X', 2 ],
+		      [ 'B', 'Y', 9 ],
+		      [ 'B', 'Z', 4 ]
+			]);
+
+			// Sets chart options.
+			var options = { width: 600, height: 200 };
+
+			// Instantiates and draws our chart, passing in some options.
+			var chart = new google.visualization.Sankey(document.getElementById('mod-container'));
+			chart.draw(data, options);
+		}
 
         /**
          * Signal that the mod is ready for export.
