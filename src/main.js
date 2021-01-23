@@ -37,6 +37,7 @@ Spotfire.initialize(async (mod) => {
         }
         mod.controls.errorOverlay.hide();
 
+
         /**
          * Get rows from dataView
          */
@@ -47,18 +48,14 @@ Spotfire.initialize(async (mod) => {
             return;
         }
 
-        /**
-         * Print out to document
-         */
-		await google.charts.load('current', {'packages':['sankey']});
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', 'From');
-		data.addColumn('string', 'To');
-		data.addColumn('number', 'Weight');
 
+        /**
+         * Create required data structure
+         */
 		rows.forEach(function(row){
 			var barvalue = Number(row.continuous("Y").value());
 			var path = row.categorical("X").value();
+			var barcolor = row.color().hexCode;
 			
 			var path1;
 			var path2;
@@ -66,18 +63,17 @@ Spotfire.initialize(async (mod) => {
 				path1 = path[0].formattedValue() + " (From)";
 				path2 = path[1].formattedValue() + " (To)";
 			}
-			data.addRows([
-		      [ path1, path2, barvalue ]
-			]);	
+			
+			//TODO
 		});
 		
-		// Sets chart options.
-		var options = {  };
-
-		// Instantiates and draws our chart, passing in some options.
-		var chart = new google.visualization.Sankey(document.getElementById('mod-container'));
-		chart.draw(data, options);
-
+		
+		/**
+		 * Render data structure
+		 */
+		//TODO
+		
+		
         /**
          * Signal that the mod is ready for export.
          */
