@@ -48,30 +48,58 @@ Spotfire.initialize(async (mod) => {
             return;
         }
 
-
+		
         /**
-         * Create required data structure
+         * Create required data structure to render nodes
          */
+		var totalcount = 0;
+		var path1bars = new Map();
+		var path2bars = new Map();
+
 		rows.forEach(function(row){
 			var barvalue = Number(row.continuous("Y").value());
 			var path = row.categorical("X").value();
-			var barcolor = row.color().hexCode;
+			//var barcolor = row.color().hexCode;
 			
 			var path1;
 			var path2;
-			if ( path.length == 2 ){
-				path1 = path[0].formattedValue() + " (From)";
-				path2 = path[1].formattedValue() + " (To)";
-			}
 			
-			//TODO
+			if ( path.length == 2 ){
+				path1 = path[0].formattedValue();
+				path2 = path[1].formattedValue();
+			
+				if ( !path1bars.has(path1) ){
+					path1bars.set( path1, 0 );
+				}
+				if ( !path2bars.has(path2) ){
+					path2bars.set( path2, 0 );
+				}
+
+				path1bars.set(path1, path1bars.get(path1) + barvalue);
+				path2bars.set(path2, path2bars.get(path2) + barvalue);
+
+			}
+			//TODO Check for negative bar values and show error
+			//TODO Check if sum of all barvalues is the same for all paths
+			totalcount += barvalue;
 		});
 		
 		
 		/**
-		 * Render data structure
+		 * Render nodes
 		 */
 		//TODO
+		var divmod = document.querySelector("#mod-container");
+		
+		divmod.innerHTML = "Total " + totalcount + "\n\n";
+		
+		path1bars.forEach(function(pathbarvalue, path){
+			divmod.innerHTML += path + " " + pathbarvalue + "\n";
+		});
+		divmod.innerHTML += "\n";
+		path2bars.forEach(function(pathbarvalue, path){
+			divmod.innerHTML += path + " " + pathbarvalue + "\n";
+		});
 		
 		
         /**
