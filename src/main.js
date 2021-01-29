@@ -48,75 +48,54 @@ Spotfire.initialize(async (mod) => {
             return;
         }
 
-		
-        /**
-         * Create required data structure to render nodes
-         */
-		var totalcount = 0;
-		var path1bars = new Map();
-		var path2bars = new Map();
 
-		rows.forEach(function(row){
-			var barvalue = Number(row.continuous("Y").value());
-			var path = row.categorical("X").value();
-			//var barcolor = row.color().hexCode;
-			
-			var path1;
-			var path2;
-			
-			if ( path.length == 2 ){
-				path1 = path[0].formattedValue();
-				path2 = path[1].formattedValue();
-			
-				if ( !path1bars.has(path1) ){
-					path1bars.set( path1, 0 );
-				}
-				if ( !path2bars.has(path2) ){
-					path2bars.set( path2, 0 );
-				}
-
-				path1bars.set(path1, path1bars.get(path1) + barvalue);
-				path2bars.set(path2, path2bars.get(path2) + barvalue);
-
-			}
-			//TODO Check for negative bar values and show error
-			//TODO Check if sum of all barvalues is the same for all paths
-			totalcount += barvalue;
-		});
+		var cataxis = await dataView.categoricalAxis("X");
+		var cataxislevels = cataxis.hierarchy.levels;
 		
+		var nodelevels = new Array();
 		
+		for(var i in cataxislevels){
+			var nodelevel = new Map();
+			rows.forEach(function(row){
+				var barvalue = Number(row.continuous("Y").value());
+				var path = row.categorical("X").value();
+				//var barcolor = row.color().hexCode;
+				
+				var path1 = path[i].formattedValue();
+				if ( !nodelevel.has(path1) ){ nodelevel.set( path1, 0 ); }
+				nodelevel.set(path1, nodelevel.get(path1) + barvalue);
+	
+				//TODO Check for negative bar values and show error
+				//TODO Check if sum of all barvalues is the same for all paths
+			});			
+			
+			nodelevels.push(nodelevel);			
+		}
+
+				
 		/**
 		 * Render nodes
 		 */
-		//TODO
 		var svgmod = document.querySelector("#mod-svg");
 		svgmod.innerHTML = "";
 
 		//TODO bargap should be look at max number of size to ensure certain minimum space between segments 
 		var bargap = 20;
 		
-		var barsegmentposition = 0;
-		path1bars.forEach(function(pathbarvalue, path){
-			var barsegmentrect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-			barsegmentrect.setAttribute("x", 0);
-			barsegmentrect.setAttribute("y", barsegmentposition);
-			barsegmentrect.setAttribute("width", 10);
-			barsegmentrect.setAttribute("height", pathbarvalue);
-			barsegmentposition += pathbarvalue + bargap / path1bars.size;
-			svgmod.appendChild(barsegmentrect);
-		});
-		
-		barsegmentposition = 0;
-		path2bars.forEach(function(pathbarvalue, path){
-			var barsegmentrect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-			barsegmentrect.setAttribute("x", 100);
-			barsegmentrect.setAttribute("y", barsegmentposition);
-			barsegmentrect.setAttribute("width", 10);
-			barsegmentrect.setAttribute("height", pathbarvalue);
-			barsegmentposition += pathbarvalue + bargap / path2bars.size;
-			svgmod.appendChild(barsegmentrect);
-		});
-		
+		for(var i in nodelevels){
+			var nodelevel = nodelevels[i];
+			var barsegmentposition = 0;
+			nodelevel.forEach(function(pathbarvalue, path){
+				var barsegmentrect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+				barsegmentrect.setAttribute("x", 100 * i);
+				barsegmentrect.setAttribute("y", barsegmentposition);
+				barsegmentrect.setAttribute("width", 10);
+				barsegmentrect.setAttribute("height", pathbarvalue);
+				barsegmentposition += pathbarvalue + bargap / nodelevel.size;
+				svgmod.appendChild(barsegmentrect);
+			});
+		}
+				
 		
         /**
          * Signal that the mod is ready for export.
