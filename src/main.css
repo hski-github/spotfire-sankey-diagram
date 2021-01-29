@@ -10,5 +10,12 @@ body{
 }
 
 #mod-container {
-    white-space: pre;
+	height: 50%;
+	width: 100%;
+}
+
+#mod-svg{
+	height: 50%;
+	width: 100%;
+	-display: block;
 }

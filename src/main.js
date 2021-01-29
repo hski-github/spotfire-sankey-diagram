@@ -89,16 +89,32 @@ Spotfire.initialize(async (mod) => {
 		 * Render nodes
 		 */
 		//TODO
-		var divmod = document.querySelector("#mod-container");
+		var svgmod = document.querySelector("#mod-svg");
+		svgmod.innerHTML = "";
+
+		//TODO bargap should be look at max number of size to ensure certain minimum space between segments 
+		var bargap = 20;
 		
-		divmod.innerHTML = "Total " + totalcount + "\n\n";
-		
+		var barsegmentposition = 0;
 		path1bars.forEach(function(pathbarvalue, path){
-			divmod.innerHTML += path + " " + pathbarvalue + "\n";
+			var barsegmentrect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+			barsegmentrect.setAttribute("x", 0);
+			barsegmentrect.setAttribute("y", barsegmentposition);
+			barsegmentrect.setAttribute("width", 10);
+			barsegmentrect.setAttribute("height", pathbarvalue);
+			barsegmentposition += pathbarvalue + bargap / path1bars.size;
+			svgmod.appendChild(barsegmentrect);
 		});
-		divmod.innerHTML += "\n";
+		
+		barsegmentposition = 0;
 		path2bars.forEach(function(pathbarvalue, path){
-			divmod.innerHTML += path + " " + pathbarvalue + "\n";
+			var barsegmentrect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+			barsegmentrect.setAttribute("x", 100);
+			barsegmentrect.setAttribute("y", barsegmentposition);
+			barsegmentrect.setAttribute("width", 10);
+			barsegmentrect.setAttribute("height", pathbarvalue);
+			barsegmentposition += pathbarvalue + bargap / path2bars.size;
+			svgmod.appendChild(barsegmentrect);
 		});
 		
 		
