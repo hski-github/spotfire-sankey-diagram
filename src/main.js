@@ -84,21 +84,29 @@ Spotfire.initialize(async (mod) => {
 
 		//TODO barsegmentgap should be look at max number of size to ensure certain minimum space between segments 
 		//TODO bargap should be dynamic based on number of bars
-		var barsegmentgap = 20;
-		var bargap = 100;
+		const barsegmentgap = 20;
+		const bargap = 100;
+		const barwidth = 10;
 		
 		
 		for(var i in bars){
 			var bar = bars[i];
 			var barheightcursor = 0;
+			
 			bar.forEach(function(barsegment, barsegmentlabel){
+				var x = bargap * i;
+				var y = barheightcursor;
+				barsegment.x = x;
+				barsegment.y = y;
+
 				var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-				rect.setAttribute("x", bargap * i);
-				rect.setAttribute("y", barheightcursor);
-				rect.setAttribute("width", 10);
+				rect.setAttribute("x", x );
+				rect.setAttribute("y", y);
+				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.height);
-				barheightcursor += barsegment.height + barsegmentgap / bar.size;
 				svgmod.appendChild(rect);
+
+				barheightcursor += barsegment.height + barsegmentgap / bar.size;
 			});
 		}
 				
