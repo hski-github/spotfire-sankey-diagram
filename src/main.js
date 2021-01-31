@@ -62,8 +62,9 @@ Spotfire.initialize(async (mod) => {
 				//var barcolor = row.color().hexCode;
 				
 				var path1 = path[i].formattedValue();
-				if ( !nodelevel.has(path1) ){ nodelevel.set( path1, 0 ); }
-				nodelevel.set(path1, nodelevel.get(path1) + barvalue);
+				if ( !nodelevel.has(path1) ){ nodelevel.set( path1, { height: 0} ); }
+				
+				nodelevel.get(path1).height += barvalue;
 	
 				//TODO Check for negative bar values and show error
 				//TODO Check if sum of all barvalues is the same for all paths
@@ -86,12 +87,13 @@ Spotfire.initialize(async (mod) => {
 			var nodelevel = nodelevels[i];
 			var barsegmentposition = 0;
 			nodelevel.forEach(function(pathbarvalue, path){
+				var height = pathbarvalue.height;
 				var barsegmentrect = document.createElementNS("http://www.w3.org/2000/svg","rect");
 				barsegmentrect.setAttribute("x", 100 * i);
 				barsegmentrect.setAttribute("y", barsegmentposition);
 				barsegmentrect.setAttribute("width", 10);
-				barsegmentrect.setAttribute("height", pathbarvalue);
-				barsegmentposition += pathbarvalue + bargap / nodelevel.size;
+				barsegmentrect.setAttribute("height", height);
+				barsegmentposition += height + bargap / nodelevel.size;
 				svgmod.appendChild(barsegmentrect);
 			});
 		}
