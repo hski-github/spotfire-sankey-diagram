@@ -52,25 +52,27 @@ Spotfire.initialize(async (mod) => {
 		var cataxis = await dataView.categoricalAxis("X");
 		var cataxislevels = cataxis.hierarchy.levels;
 		
-		var nodelevels = new Array();
 		
+		/**
+		 * Create data structure for bars
+		 */
+		var bars = new Array();
 		for(var i in cataxislevels){
-			var nodelevel = new Map();
+			var bar = new Map();
 			rows.forEach(function(row){
-				var barvalue = Number(row.continuous("Y").value());
-				var path = row.categorical("X").value();
+				var rowvalue = Number(row.continuous("Y").value());
+				var rowlabel = row.categorical("X").value();
 				//var barcolor = row.color().hexCode;
 				
-				var path1 = path[i].formattedValue();
-				if ( !nodelevel.has(path1) ){ nodelevel.set( path1, { height: 0} ); }
+				var rowlabelpart = rowlabel[i].formattedValue();
+				if ( !bar.has(rowlabelpart) ){ bar.set( rowlabelpart, { height: 0 } ); }
 				
-				nodelevel.get(path1).height += barvalue;
+				bar.get(rowlabelpart).height += rowvalue;
 	
 				//TODO Check for negative bar values and show error
 				//TODO Check if sum of all barvalues is the same for all paths
 			});			
-			
-			nodelevels.push(nodelevel);			
+			bars.push(bar);			
 		}
 
 				
@@ -80,21 +82,23 @@ Spotfire.initialize(async (mod) => {
 		var svgmod = document.querySelector("#mod-svg");
 		svgmod.innerHTML = "";
 
-		//TODO bargap should be look at max number of size to ensure certain minimum space between segments 
-		var bargap = 20;
+		//TODO barsegmentgap should be look at max number of size to ensure certain minimum space between segments 
+		//TODO bargap should be dynamic based on number of bars
+		var barsegmentgap = 20;
+		var bargap = 100;
 		
-		for(var i in nodelevels){
-			var nodelevel = nodelevels[i];
-			var barsegmentposition = 0;
-			nodelevel.forEach(function(pathbarvalue, path){
-				var height = pathbarvalue.height;
-				var barsegmentrect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-				barsegmentrect.setAttribute("x", 100 * i);
-				barsegmentrect.setAttribute("y", barsegmentposition);
-				barsegmentrect.setAttribute("width", 10);
-				barsegmentrect.setAttribute("height", height);
-				barsegmentposition += height + bargap / nodelevel.size;
-				svgmod.appendChild(barsegmentrect);
+		
+		for(var i in bars){
+			var bar = bars[i];
+			var barheightcursor = 0;
+			bar.forEach(function(barsegment, barsegmentlabel){
+				var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+				rect.setAttribute("x", bargap * i);
+				rect.setAttribute("y", barheightcursor);
+				rect.setAttribute("width", 10);
+				rect.setAttribute("height", barsegment.height);
+				barheightcursor += barsegment.height + barsegmentgap / bar.size;
+				svgmod.appendChild(rect);
 			});
 		}
 				
