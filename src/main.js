@@ -105,6 +105,7 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("y", y);
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.height);
+				rect.setAttribute("style", "fill:grey;");
 				svgmod.appendChild(rect);
 
 				barheightcursor += barsegment.height + barsegmentgap / bar.size;
@@ -117,6 +118,7 @@ Spotfire.initialize(async (mod) => {
 		rows.forEach(function(row){
 			var rowvalue = Number(row.continuous("Y").value());
 			var rowlabel = row.categorical("X").value();
+			var rowcolor = row.color().hexCode;
 			
 			for(var i = 0; i < rowlabel.length; i++){
 				
@@ -135,7 +137,7 @@ Spotfire.initialize(async (mod) => {
 					points += barsegment2.x + "," + (barsegment2.heightcursor + rowvalue) + " "; 
 					points += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue) + " ";
 					polygon.setAttribute("points", points);
-					polygon.setAttribute("style", "fill:darkgrey;opacity:0.6;");
+					polygon.setAttribute("style", "fill:" + rowcolor + ";opacity:0.6;");
 					svgmod.append(polygon);
 					
 				}
