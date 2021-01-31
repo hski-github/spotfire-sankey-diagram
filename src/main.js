@@ -77,7 +77,7 @@ Spotfire.initialize(async (mod) => {
 
 				
 		/**
-		 * Render nodes
+		 * Render bars
 		 */
 		var svgmod = document.querySelector("#mod-svg");
 		svgmod.innerHTML = "";
@@ -98,9 +98,10 @@ Spotfire.initialize(async (mod) => {
 				var y = barheightcursor;
 				barsegment.x = x;
 				barsegment.y = y;
+				barsegment.heightcursor = y;
 
 				var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-				rect.setAttribute("x", x );
+				rect.setAttribute("x", x);
 				rect.setAttribute("y", y);
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.height);
@@ -110,7 +111,39 @@ Spotfire.initialize(async (mod) => {
 			});
 		}
 				
-		
+		/**
+		 * Render rows
+		 */	
+		rows.forEach(function(row){
+			var rowvalue = Number(row.continuous("Y").value());
+			var rowlabel = row.categorical("X").value();
+			
+			for(var i = 0; i < rowlabel.length; i++){
+				
+				var bar1 = bars[i];
+				var barsegment1 = bar1.get(rowlabel[i].formattedValue());
+
+				if ( i + 1 < rowlabel.length ){
+
+					var bar2 = bars[i + 1];
+					var barsegment2 = bar2.get(rowlabel[i + 1].formattedValue());
+
+					var polygon = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+					var points = "";
+					points += (barsegment1.x + barwidth) + "," + barsegment1.heightcursor + " ";
+					points += barsegment2.x + "," + barsegment2.heightcursor + " ";
+					points += barsegment2.x + "," + (barsegment2.heightcursor + rowvalue) + " "; 
+					points += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue) + " ";
+					polygon.setAttribute("points", points);
+					polygon.setAttribute("style", "fill:darkgrey;opacity:0.6;");
+					svgmod.append(polygon);
+					
+				}
+				barsegment1.heightcursor += rowvalue;
+			}
+
+		});
+			
         /**
          * Signal that the mod is ready for export.
          */
