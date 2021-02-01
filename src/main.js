@@ -59,15 +59,16 @@ Spotfire.initialize(async (mod) => {
 		var bars = new Array();
 		for(var i in cataxislevels){
 			var bar = new Map();
+			bar.height = 0;
 			rows.forEach(function(row){
 				var rowvalue = Number(row.continuous("Y").value());
 				var rowlabel = row.categorical("X").value();
-				//var barcolor = row.color().hexCode;
 				
 				var rowlabelpart = rowlabel[i].formattedValue();
 				if ( !bar.has(rowlabelpart) ){ bar.set( rowlabelpart, { height: 0 } ); }
 				
 				bar.get(rowlabelpart).height += rowvalue;
+				bar.height += rowvalue;
 	
 				//TODO Check for negative bar values and show error
 				//TODO Check if sum of all barvalues is the same for all paths
@@ -80,6 +81,8 @@ Spotfire.initialize(async (mod) => {
 		 * Render bars
 		 */
 		var svgmod = document.querySelector("#mod-svg");
+		svgmod.setAttribute("width", windowSize.width);
+		svgmod.setAttribute("height", windowSize.height);
 		svgmod.innerHTML = "";
 
 		//TODO barsegmentgap should be look at max number of size to ensure certain minimum space between segments 
@@ -87,6 +90,7 @@ Spotfire.initialize(async (mod) => {
 		const barsegmentgap = 20;
 		const bargap = 100;
 		const barwidth = 10;
+		const heightscale = windowSize.height / (bars[0].height + barsegmentgap );
 		
 		
 		for(var i in bars){
@@ -104,11 +108,11 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("x", x);
 				rect.setAttribute("y", y);
 				rect.setAttribute("width", barwidth);
-				rect.setAttribute("height", barsegment.height);
+				rect.setAttribute("height", barsegment.height * heightscale);
 				rect.setAttribute("style", "fill:grey;");
 				svgmod.appendChild(rect);
 
-				barheightcursor += barsegment.height + barsegmentgap / bar.size;
+				barheightcursor += (barsegment.height + barsegmentgap / (bar.size - 1) ) * heightscale ;
 			});
 		}
 				
@@ -134,14 +138,14 @@ Spotfire.initialize(async (mod) => {
 					var points = "";
 					points += (barsegment1.x + barwidth) + "," + barsegment1.heightcursor + " ";
 					points += barsegment2.x + "," + barsegment2.heightcursor + " ";
-					points += barsegment2.x + "," + (barsegment2.heightcursor + rowvalue) + " "; 
-					points += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue) + " ";
+					points += barsegment2.x + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
+					points += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
 					polygon.setAttribute("points", points);
 					polygon.setAttribute("style", "fill:" + rowcolor + ";opacity:0.6;");
 					svgmod.append(polygon);
 					
 				}
-				barsegment1.heightcursor += rowvalue;
+				barsegment1.heightcursor += rowvalue * heightscale;
 			}
 
 		});

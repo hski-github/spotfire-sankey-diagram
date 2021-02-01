@@ -8,14 +8,3 @@ body{
     margin: 0;
     overflow: hidden;
 }
-
-#mod-container {
-	height: 50%;
-	width: 100%;
-}
-
-#mod-svg{
-	height: 50%;
-	width: 100%;
-	-display: block;
-}
