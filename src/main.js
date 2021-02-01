@@ -88,8 +88,8 @@ Spotfire.initialize(async (mod) => {
 		//TODO barsegmentgap should be look at max number of size to ensure certain minimum space between segments 
 		//TODO bargap should be dynamic based on number of bars
 		const barsegmentgap = 20;
-		const bargap = 100;
 		const barwidth = 10;
+		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
 		const heightscale = windowSize.height / (bars[0].height + barsegmentgap );
 		
 		
