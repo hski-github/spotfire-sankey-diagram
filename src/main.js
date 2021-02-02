@@ -134,16 +134,17 @@ Spotfire.initialize(async (mod) => {
 					var bar2 = bars[i + 1];
 					var barsegment2 = bar2.get(rowlabel[i + 1].formattedValue());
 
-					var polygon = document.createElementNS("http://www.w3.org/2000/svg","polygon");
-					var points = "";
-					points += (barsegment1.x + barwidth) + "," + barsegment1.heightcursor + " ";
-					points += barsegment2.x + "," + barsegment2.heightcursor + " ";
-					points += barsegment2.x + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
-					points += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
-					polygon.setAttribute("points", points);
-					polygon.setAttribute("style", "fill:" + rowcolor + ";opacity:0.6;");
-					polygon.setAttribute("row", j)
-					svgmod.append(polygon);
+					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
+					var d = "M ";
+					d += (barsegment1.x + barwidth) + "," + barsegment1.heightcursor + " ";
+					d += barsegment2.x + "," + barsegment2.heightcursor + " ";
+					d += barsegment2.x + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
+					d += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
+					d += "Z";
+					path.setAttribute("d", d);
+					path.setAttribute("style", "fill:" + rowcolor + ";opacity:0.6;");
+					path.setAttribute("row", j)
+					svgmod.append(path);
 					
 				}
 				barsegment1.heightcursor += rowvalue * heightscale;
