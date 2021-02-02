@@ -1,16 +1,19 @@
 # Spotfire Sankey Diagram
 
-First steps in creating a Spotfire mods visualization for Sankey diagram resp. Alluvial diagrams. Currently using Google Charts Sankey diagram, but has some limitations. Therefore planning for own implementation using plain SVG. Other than in Google Charts Sankey, I am planning to use color for the lines, not the nodes like it is done in the Alluvial diagram in R, see link below.
+Spotfire mods visualization for Sankey diagram resp. Alluvial diagrams in Spotfire. 
 
-[![ScreenShot](/screenshots/screenshot-spotfire-sankey-google-charts_thumbnail.png?raw=true)](/screenshots/screenshot-spotfire-sankey-google-charts.png?raw=true)
+In the category "X" axis you select the different layers, while the continuous "Y" axis is used for the size of the connections between the layers.   
 
-## Known Limitations 
+[![ScreenShot](/screenshots/screenshot-spotfire-sankey-plain-svg-thumbnail.png?raw=true)](/screenshots/screenshot-spotfire-plain-svg.png?raw=true)
 
-- No same values on both axis because of limitation in Google Charts Sankey, therefore adding suffix "(From)" and "(To).
-- Only two axis
-- No control of coloring
-- No support for marking 
-- No control over sorting
+Using R package for Alluvial as reference for layout and color. Started using D3 resp. Google Charts for Sankey, but then switched to plain SVG implementation due to constraints regarding coloring and  sorting.
+ 
+
+## Open Topics 
+- Support for marking in the Sankey diagram 
+- Labels for category values 
+- Tool tip for more information about bar segments and connections 
+- Custom sorting 
 
 
 ## References
