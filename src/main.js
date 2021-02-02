@@ -119,7 +119,7 @@ Spotfire.initialize(async (mod) => {
 		/**
 		 * Render rows
 		 */	
-		rows.forEach(function(row){
+		rows.forEach(function(row, j){
 			var rowvalue = Number(row.continuous("Y").value());
 			var rowlabel = row.categorical("X").value();
 			var rowcolor = row.color().hexCode;
@@ -142,6 +142,7 @@ Spotfire.initialize(async (mod) => {
 					points += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
 					polygon.setAttribute("points", points);
 					polygon.setAttribute("style", "fill:" + rowcolor + ";opacity:0.6;");
+					polygon.setAttribute("row", j)
 					svgmod.append(polygon);
 					
 				}
