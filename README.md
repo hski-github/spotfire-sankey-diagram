@@ -4,7 +4,7 @@ Spotfire mods visualization for Sankey diagram resp. Alluvial diagrams in Spotfi
 
 In the category "X" axis you select the different layers, while the continuous "Y" axis is used for the size of the connections between the layers.   
 
-[![ScreenShot](/screenshots/screenshot-spotfire-sankey-plain-svg-thumbnail.png?raw=true)](/screenshots/screenshot-spotfire-plain-svg.png?raw=true)
+[![ScreenShot](/screenshots/screenshot-spotfire-sankey-plain-svg-thumbnail.png?raw=true)](/screenshots/screenshot-spotfire-sankey-plain-svg.png?raw=true)
 
 Using R package for Alluvial as reference for layout and color. Started using D3 resp. Google Charts for Sankey, but then switched to plain SVG implementation due to constraints regarding coloring and  sorting.
  
