@@ -135,10 +135,14 @@ Spotfire.initialize(async (mod) => {
 					var barsegment2 = bar2.get(rowlabel[i + 1].formattedValue());
 
 					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
-					var d = "M ";
-					d += (barsegment1.x + barwidth) + "," + barsegment1.heightcursor + " ";
+					var d = "";
+					d += "M "+ (barsegment1.x + barwidth) + "," + barsegment1.heightcursor + " ";
+					d += "C " + (barsegment1.x + barwidth + bargap / 4) + "," + barsegment1.heightcursor + " ";
+					d += (barsegment2.x - bargap / 4) + "," + barsegment2.heightcursor + " ";
 					d += barsegment2.x + "," + barsegment2.heightcursor + " ";
-					d += barsegment2.x + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
+					d += "L " + barsegment2.x + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
+					d += "C " + (barsegment2.x - bargap / 4) + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
+					d += (barsegment1.x + barwidth + bargap / 4) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
 					d += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
 					d += "Z";
 					path.setAttribute("d", d);
