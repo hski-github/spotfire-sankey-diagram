@@ -12,6 +12,13 @@
         }
     ],
     "dataViewDefinition": {
+        "colorAxis": {
+            "mode": "dual",
+            "dropTarget": {
+                "icon": "Color",
+                "description": "Color by {0}"
+            }
+        },
         "axes": [
             {
                 "name": "X",
@@ -33,6 +40,5 @@
         "index.html",
         "main.css",
         "main.js"
-    ],
-    "externalResources": ["https://www.gstatic.com/"]    
+    ]
 }
