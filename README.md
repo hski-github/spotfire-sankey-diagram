@@ -21,3 +21,6 @@ Using R package for Alluvial as reference for layout and color. Started using D3
 - http://www.datasmith.org/2020/05/02/alluvial-plots-vs-sankey-diagrams/
 - https://stackoverflow.com/questions/4545254/sankey-diagram-in-javascript
 - https://developers.google.com/chart/interactive/docs/gallery/sankey
+- https://github.com/d3/d3-sankey
+- https://observablehq.com/collection/@d3/d3-sankey
+- https://www.tagesschau.de/inland/btw17/waehlerwanderung-115.html
