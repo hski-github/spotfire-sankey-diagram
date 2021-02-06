@@ -122,17 +122,13 @@ Spotfire.initialize(async (mod) => {
 				gbars.appendChild(rect);
 				
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
-				if ( i == 0 ){
-					text.setAttribute("x", x + barwidth + barsegmentlabelgap);
-					text.setAttribute("text-anchor", "start");
-				}
-				else if ( i == bars.length - 1 ) {
+				if ( i == bars.length - 1 ) {
 					text.setAttribute("x", x - barsegmentlabelgap);
 					text.setAttribute("text-anchor", "end");
 				}				
 				else {
-					text.setAttribute("x", x + barwidth / 2);
-					text.setAttribute("text-anchor", "middle");
+					text.setAttribute("x", x + barwidth + barsegmentlabelgap);
+					text.setAttribute("text-anchor", "start");
 				}
 				text.setAttribute("baseline-shift", "-1em");
 				text.setAttribute("y", y);
