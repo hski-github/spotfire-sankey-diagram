@@ -76,23 +76,32 @@ Spotfire.initialize(async (mod) => {
 			bars.push(bar);			
 		}
 
-				
+			
 		/**
-		 * Render bars
-		 */
+		 * Clear SVG and set constants
+		 */	
 		var svgmod = document.querySelector("#mod-svg");
 		svgmod.setAttribute("width", windowSize.width);
 		svgmod.setAttribute("height", windowSize.height);
 		svgmod.innerHTML = "";
+		
+		var gbars = document.createElementNS("http://www.w3.org/2000/svg","g");
+		var glabels = document.createElementNS("http://www.w3.org/2000/svg","g");
+		svgmod.appendChild(gbars);
+		svgmod.appendChild(glabels);
 
 		//TODO barsegmentgap should be look at max number of size to ensure certain minimum space between segments 
 		//TODO bargap should be dynamic based on number of bars
 		const barsegmentgap = 20;
 		const barwidth = 10;
+		const barsegmentlabelgap = 3;
 		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
 		const heightscale = windowSize.height / (bars[0].height + barsegmentgap );
 		
 		
+		/**
+		 * Render bars
+		 */
 		for(var i in bars){
 			var bar = bars[i];
 			var barheightcursor = 0;
@@ -110,7 +119,25 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.height * heightscale);
 				rect.setAttribute("style", "fill:grey;");
-				svgmod.appendChild(rect);
+				gbars.appendChild(rect);
+				
+				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
+				if ( i == 0 ){
+					text.setAttribute("x", x + barwidth + barsegmentlabelgap);
+					text.setAttribute("text-anchor", "start");
+				}
+				else if ( i == bars.length - 1 ) {
+					text.setAttribute("x", x - barsegmentlabelgap);
+					text.setAttribute("text-anchor", "end");
+				}				
+				else {
+					text.setAttribute("x", x + barwidth / 2);
+					text.setAttribute("text-anchor", "middle");
+				}
+				text.setAttribute("baseline-shift", "-1em");
+				text.setAttribute("y", y);
+				text.innerHTML = barsegmentlabel;
+				glabels.appendChild(text);
 
 				barheightcursor += (barsegment.height + barsegmentgap / (bar.size - 1) ) * heightscale ;
 			});
@@ -148,7 +175,7 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";opacity:0.6;");
 					path.setAttribute("row", j)
-					svgmod.append(path);
+					gbars.append(path);
 					
 				}
 				barsegment1.heightcursor += rowvalue * heightscale;
