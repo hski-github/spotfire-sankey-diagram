@@ -130,8 +130,13 @@ Spotfire.initialize(async (mod) => {
 					text.setAttribute("x", x + barwidth + barsegmentlabelgap);
 					text.setAttribute("text-anchor", "start");
 				}
-				text.setAttribute("baseline-shift", "-1em");
-				text.setAttribute("y", y);
+				if ( y < windowSize.height - barsegmentgap ){
+					text.setAttribute("baseline-shift", "-1em");
+					text.setAttribute("y", y);
+				}
+				else {
+					text.setAttribute("y", windowSize.height);					
+				}
 				text.innerHTML = barsegmentlabel;
 				glabels.appendChild(text);
 
