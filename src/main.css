@@ -8,3 +8,9 @@ body{
     margin: 0;
     overflow: hidden;
 }
+text {
+	cursor: default;
+}
+rect {
+	fill: grey;
+}

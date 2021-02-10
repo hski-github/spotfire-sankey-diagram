@@ -125,7 +125,6 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("y", y);
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.height * heightscale);
-				rect.setAttribute("style", "fill:grey;");
 				gbars.appendChild(rect);
 				
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
