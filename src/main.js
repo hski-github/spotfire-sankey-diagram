@@ -86,8 +86,15 @@ Spotfire.initialize(async (mod) => {
 		svgmod.innerHTML = "";
 		
 		var gbars = document.createElementNS("http://www.w3.org/2000/svg","g");
-		var glabels = document.createElementNS("http://www.w3.org/2000/svg","g");
+		gbars.setAttribute("id", "mod-svg-bars");
 		svgmod.appendChild(gbars);
+		
+		var grows = document.createElementNS("http://www.w3.org/2000/svg","g");
+		grows.setAttribute("id", "mod-svg-rows");
+		svgmod.appendChild(grows);
+
+		var glabels = document.createElementNS("http://www.w3.org/2000/svg","g");
+		glabels.setAttribute("id", "mod-svg-labels");
 		svgmod.appendChild(glabels);
 
 		//TODO barsegmentgap should be look at max number of size to ensure certain minimum space between segments 
@@ -176,7 +183,7 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j)
-					gbars.append(path);
+					grows.append(path);
 					
 				}
 				barsegment1.heightcursor += rowvalue * heightscale;
