@@ -181,7 +181,17 @@ Spotfire.initialize(async (mod) => {
 					d += "Z";
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
-					path.setAttribute("row", j)
+					path.setAttribute("row", j);
+					path.addEventListener("click", function ( event ){
+						var rect = event.target;
+						var row = rect.getAttribute("row");
+						if (event.shiftKey) {
+							dataView.mark(new Array(rows[row]),"Add");
+						}
+						else {
+							dataView.mark(new Array(rows[row]),"Replace");
+						}
+					});
 					grows.append(path);
 					
 				}
