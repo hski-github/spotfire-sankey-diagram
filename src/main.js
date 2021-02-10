@@ -174,7 +174,7 @@ Spotfire.initialize(async (mod) => {
 					d += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
 					d += "Z";
 					path.setAttribute("d", d);
-					path.setAttribute("style", "fill:" + rowcolor + ";opacity:0.6;");
+					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j)
 					gbars.append(path);
 					
