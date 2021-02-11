@@ -187,6 +187,8 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
+					path.setAttribute("rowvalue", rowvalue);
+					path.setAttribute("rowlabel", rowlabel);
 					path.onclick = function ( event ){
 						var rect = event.target;
 						var row = rect.getAttribute("row");
@@ -197,6 +199,16 @@ Spotfire.initialize(async (mod) => {
 							dataView.mark(new Array(rows[row]),"Replace");
 						}
 					};
+					path.onmouseover = function (event){
+						var rect = event.target;
+						var row = rows[rect.getAttribute("row")];						
+						var rowvalue = Number(row.continuous("Y").formattedValue());
+						var rowlabel = row.categorical("X").formattedValue();
+	                    mod.controls.tooltip.show(rowlabel + "\r\n" + rowvalue);
+					};
+					path.onmouseout = function (event){
+	                    mod.controls.tooltip.hide();
+					}
 					grows.append(path);
 					
 				}
