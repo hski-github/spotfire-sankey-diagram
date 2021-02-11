@@ -10,10 +10,9 @@ Using R package for Alluvial as reference for layout and color. Started using D3
  
 
 ## Open Topics 
-- Better layout of labels for category values (overlap in case of long labels and overlap in case of small values)
-- Better layout in tool tip for information about category and continuous values (alignment with rendering like in standard bar chart)
-- Better layout of path objects so that smallest are shown in the foreground #5
-- Optimizing order of paths 
+- Better layout of labels for category values https://github.com/hski-github/spotfire-sankey-diagram/issues/3
+- Better layout in tool tip for information about category and continuous values https://github.com/hski-github/spotfire-sankey-diagram/issues/4
+- Better layout of path objects so that smallest are shown in the foreground https://github.com/hski-github/spotfire-sankey-diagram/issues/5
 
 
 ## References
