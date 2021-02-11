@@ -8,3 +8,10 @@ body{
     margin: 0;
     overflow: hidden;
 }
+text {
+	pointer-events: none;
+	user-select: none;
+}
+rect {
+	fill: grey;
+}
