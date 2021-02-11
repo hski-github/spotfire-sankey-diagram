@@ -10,9 +10,9 @@ Using R package for Alluvial as reference for layout and color. Started using D3
  
 
 ## Open Topics 
-- Better layout of labels for category values 
-- Better layout in tool tip for information about category and continuous values 
-- Better layout of path objects so that smallest are shown in the foreground 
+- Better layout of labels for category values (overlap in case of long labels and overlap in case of small values)
+- Better layout in tool tip for information about category and continuous values (alignment with rendering like in standard bar chart)
+- Better layout of path objects so that smallest are shown in the foreground (decided to not use opacity for colors because otherwise not the correct color as defined, but then other objects in the background are not really visible anymore)
 - Optimizing order of paths 
 
 
