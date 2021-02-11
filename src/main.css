@@ -9,7 +9,8 @@ body{
     overflow: hidden;
 }
 text {
-	cursor: default;
+	pointer-events: none;
+	user-select: none;
 }
 rect {
 	fill: grey;
