@@ -10,10 +10,10 @@ Using R package for Alluvial as reference for layout and color. Started using D3
  
 
 ## Open Topics 
-- Support for marking in the Sankey diagram 
-- Labels for category values 
-- Tool tip for more information about bar segments and connections 
-- Custom sorting 
+- Better layout of labels for category values 
+- Better layout in tool tip for information about category and continuous values 
+- Better layout of path objects so that smallest are shown in the foreground 
+- Optimizing order of paths 
 
 
 ## References
