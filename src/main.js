@@ -84,6 +84,11 @@ Spotfire.initialize(async (mod) => {
 		svgmod.setAttribute("width", windowSize.width);
 		svgmod.setAttribute("height", windowSize.height);
 		svgmod.innerHTML = "";
+		svgmod.onclick = function (e) {
+            if (e.target === svgmod) {
+                dataView.clearMarking();
+            }
+        };
 		
 		var gbars = document.createElementNS("http://www.w3.org/2000/svg","g");
 		gbars.setAttribute("id", "mod-svg-bars");
@@ -182,7 +187,7 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
-					path.addEventListener("click", function ( event ){
+					path.onclick = function ( event ){
 						var rect = event.target;
 						var row = rect.getAttribute("row");
 						if (event.shiftKey) {
@@ -191,7 +196,7 @@ Spotfire.initialize(async (mod) => {
 						else {
 							dataView.mark(new Array(rows[row]),"Replace");
 						}
-					});
+					};
 					grows.append(path);
 					
 				}
