@@ -216,6 +216,22 @@ Spotfire.initialize(async (mod) => {
 			}
 
 		});
+		
+		
+        /**
+         * Sorting of rows so that big rows are not in front of small rows
+         */
+		paths = Array.from(grows.children);
+		paths.sort(function(a, b) {
+			avalue = Number(a.getAttribute("rowvalue"));
+			bvalue = Number(b.getAttribute("rowvalue"));
+  			return bvalue - avalue;
+		});
+
+		for (i = 0; i < paths.length; ++i) {
+  			grows.appendChild(paths[i]);
+		}
+		
 			
         /**
          * Signal that the mod is ready for export.
