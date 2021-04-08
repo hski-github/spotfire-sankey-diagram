@@ -174,14 +174,14 @@ Spotfire.initialize(async (mod) => {
 					var barsegment2 = bar2.get(rowlabel[i + 1].formattedValue());
 
 					var d = [
-						"M", (barsegment1.x + barwidth), barsegment1.heightcursor,
-						"C", (barsegment1.x + barwidth + bargap / 4), barsegment1.heightcursor,
-						(barsegment2.x - bargap / 4), barsegment2.heightcursor,
+						"M", barsegment1.x + barwidth, barsegment1.heightcursor,
+						"C", barsegment1.x + barwidth + bargap / 4, barsegment1.heightcursor,
+						barsegment2.x - bargap / 4, barsegment2.heightcursor,
 						barsegment2.x, barsegment2.heightcursor,
-						"L", barsegment2.x, (barsegment2.heightcursor + rowvalue * heightscale), 
-						"C", (barsegment2.x - bargap / 4), (barsegment2.heightcursor + rowvalue * heightscale), 
-						(barsegment1.x + barwidth + bargap / 4), (barsegment1.heightcursor + rowvalue * heightscale),
-						(barsegment1.x + barwidth), (barsegment1.heightcursor + rowvalue * heightscale),
+						"L", barsegment2.x, barsegment2.heightcursor + rowvalue * heightscale, 
+						"C", barsegment2.x - bargap / 4, barsegment2.heightcursor + rowvalue * heightscale, 
+						barsegment1.x + barwidth + bargap / 4, barsegment1.heightcursor + rowvalue * heightscale,
+						barsegment1.x + barwidth, barsegment1.heightcursor + rowvalue * heightscale,
 						"Z"
 					].join(" ");
 										
