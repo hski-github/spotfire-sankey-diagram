@@ -173,17 +173,19 @@ Spotfire.initialize(async (mod) => {
 					var bar2 = bars[i + 1];
 					var barsegment2 = bar2.get(rowlabel[i + 1].formattedValue());
 
+					var d = [
+						"M", (barsegment1.x + barwidth), barsegment1.heightcursor,
+						"C", (barsegment1.x + barwidth + bargap / 4), barsegment1.heightcursor,
+						(barsegment2.x - bargap / 4), barsegment2.heightcursor,
+						barsegment2.x, barsegment2.heightcursor,
+						"L", barsegment2.x, (barsegment2.heightcursor + rowvalue * heightscale), 
+						"C", (barsegment2.x - bargap / 4), (barsegment2.heightcursor + rowvalue * heightscale), 
+						(barsegment1.x + barwidth + bargap / 4), (barsegment1.heightcursor + rowvalue * heightscale),
+						(barsegment1.x + barwidth), (barsegment1.heightcursor + rowvalue * heightscale),
+						"Z"
+					].join(" ");
+										
 					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
-					var d = "";
-					d += "M "+ (barsegment1.x + barwidth) + "," + barsegment1.heightcursor + " ";
-					d += "C " + (barsegment1.x + barwidth + bargap / 4) + "," + barsegment1.heightcursor + " ";
-					d += (barsegment2.x - bargap / 4) + "," + barsegment2.heightcursor + " ";
-					d += barsegment2.x + "," + barsegment2.heightcursor + " ";
-					d += "L " + barsegment2.x + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
-					d += "C " + (barsegment2.x - bargap / 4) + "," + (barsegment2.heightcursor + rowvalue * heightscale) + " "; 
-					d += (barsegment1.x + barwidth + bargap / 4) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
-					d += (barsegment1.x + barwidth) + "," + (barsegment1.heightcursor + rowvalue * heightscale) + " ";
-					d += "Z";
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
