@@ -191,6 +191,11 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("row", j);
 					path.setAttribute("rowvalue", rowvalue);
 					path.setAttribute("rowlabel", rowlabel);
+					grows.append(path);
+					
+					/** 
+					 * Marking
+					 */
 					path.onclick = function ( event ){
 						var rect = event.target;
 						var row = rect.getAttribute("row");
@@ -201,6 +206,10 @@ Spotfire.initialize(async (mod) => {
 							dataView.mark(new Array(rows[row]),"Replace");
 						}
 					};
+					
+					/** 
+					 * Tool Tip
+					 */
 					path.onmouseover = function (event){
 						var rect = event.target;
 						var row = rows[rect.getAttribute("row")];						
@@ -211,7 +220,6 @@ Spotfire.initialize(async (mod) => {
 					path.onmouseout = function (event){
 	                    mod.controls.tooltip.hide();
 					}
-					grows.append(path);
 					
 				}
 				barsegment1.heightcursor += rowvalue * heightscale;
