@@ -132,6 +132,10 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("height", barsegment.height * heightscale);
 				gbars.appendChild(rect);
 				
+				
+				/**
+				 * Render Label
+				 */
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
 				if ( i == bars.length - 1 ) {
 					text.setAttribute("x", x - barsegmentlabelgap);
@@ -150,6 +154,7 @@ Spotfire.initialize(async (mod) => {
 				}
 				text.innerHTML = barsegmentlabel;
 				glabels.appendChild(text);
+
 
 				barheightcursor += (barsegment.height + barsegmentgap / (bar.size - 1) ) * heightscale ;
 			});
