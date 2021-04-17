@@ -102,13 +102,14 @@ Spotfire.initialize(async (mod) => {
 		glabels.setAttribute("id", "mod-svg-labels");
 		svgmod.appendChild(glabels);
 
-		//TODO barsegmentgap should be look at max number of size to ensure certain minimum space between segments 
-		//TODO bargap should be dynamic based on number of bars
-		const barsegmentgap = 20;
 		const barwidth = 10;
-		const barsegmentlabelgap = 3;
 		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
-		const heightscale = windowSize.height / (bars[0].height + barsegmentgap );
+
+		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
+		const barsegmentgap = windowSize.height * 0.1;
+		const heightscale = (windowSize.height - barsegmentgap) / bars[0].height;
+
+		const barsegmentlabelgap = 3;
 		
 		
 		/**
@@ -156,7 +157,7 @@ Spotfire.initialize(async (mod) => {
 				glabels.appendChild(text);
 
 
-				barheightcursor += (barsegment.height + barsegmentgap / (bar.size - 1) ) * heightscale ;
+				barheightcursor += barsegment.height * heightscale + barsegmentgap / (bar.size - 1);
 			});
 		}
 				
