@@ -109,7 +109,7 @@ Spotfire.initialize(async (mod) => {
 		glabels.setAttribute("id", "mod-svg-labels");
 		svgmod.appendChild(glabels);
 
-		const barwidth = 10;
+		const barwidth = 14;
 		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
 
 		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
@@ -138,6 +138,7 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("y", y);
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.height * heightscale);
+				rect.setAttribute("style", "fill: grey;");
 				gbars.appendChild(rect);
 				
 				
