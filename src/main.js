@@ -60,14 +60,16 @@ Spotfire.initialize(async (mod) => {
 		for(var i in cataxislevels){
 			var bar = new Map();
 			bar.height = 0;
-			rows.forEach(function(row){
+			rows.forEach(function(row, j){
 				var rowvalue = Number(row.continuous("Y").value());
 				var rowlabel = row.categorical("X").value();
-				
 				var rowlabelpart = rowlabel[i].formattedValue();
-				if ( !bar.has(rowlabelpart) ){ bar.set( rowlabelpart, { height: 0 } ); }
 				
-				bar.get(rowlabelpart).height += rowvalue;
+				if ( !bar.has(rowlabelpart) ){ bar.set( rowlabelpart, { height: 0, rows: new Array() } ); }
+				
+				var barsegment = bar.get(rowlabelpart);
+				barsegment.rows.push( { rowid: j, rowvalue: rowvalue, position: barsegment.height } );
+				barsegment.height += rowvalue;
 				bar.height += rowvalue;
 	
 				//TODO Check for negative bar values and show error
@@ -76,6 +78,11 @@ Spotfire.initialize(async (mod) => {
 			bars.push(bar);			
 		}
 
+		//debugger;
+		// let testfind2 = users.find(el => (el.id > 2));
+			
+			
+			
 			
 		/**
 		 * Clear SVG and set constants
