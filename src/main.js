@@ -57,7 +57,8 @@ Spotfire.initialize(async (mod) => {
 		 * Create data structure for bars
 		 */
 		var bars = new Array();
-		for(var i in cataxislevels){
+		cataxislevels.forEach(function(level, i){
+			
 			var bar = new Map();
 			bar.height = 0;
 			rows.forEach(function(row, j){
@@ -76,7 +77,7 @@ Spotfire.initialize(async (mod) => {
 				//TODO Check if sum of all barvalues is the same for all paths
 			});			
 			bars.push(bar);			
-		}
+		});
 
 		//debugger;
 		// let testfind2 = users.find(el => (el.id > 2));
