@@ -56,7 +56,7 @@ Spotfire.initialize(async (mod) => {
 		/**
 		 * Create data structure for bars
 		 */
-		var bars2 = new Array();
+		var bars = new Array();
 		
 		cataxislevels.forEach(function(level, i){
 			
@@ -80,7 +80,7 @@ Spotfire.initialize(async (mod) => {
 				bar2.totalvalue += rowvalue;
 	
 			});			
-			bars2.push(bar2);			
+			bars.push(bar2);			
 		});
 
 		//TODO Check for negative bar values and show error
@@ -113,11 +113,11 @@ Spotfire.initialize(async (mod) => {
 		svgmod.appendChild(glabels);
 
 		const barwidth = 14;
-		const bargap = (windowSize.width - barwidth * (bars2.length) ) / (bars2.length - 1);
+		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
 
 		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
 		const barsegmentgap = windowSize.height * 0.1;
-		const heightscale = (windowSize.height - barsegmentgap) / bars2[0].totalvalue;
+		const heightscale = (windowSize.height - barsegmentgap) / bars[0].totalvalue;
 
 		const barsegmentlabelgap = 3;
 		
@@ -125,7 +125,7 @@ Spotfire.initialize(async (mod) => {
 		/**
 		 * Render bars
 		 */
-		bars2.forEach(function(bar, i){
+		bars.forEach(function(bar, i){
 			var barheightcursor = 0;
 			
 			bar.barsegments.forEach(function(barsegment, j){
@@ -149,7 +149,7 @@ Spotfire.initialize(async (mod) => {
 				 * Render Label
 				 */
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
-				if ( i == bars2.length - 1 ) {
+				if ( i == bars.length - 1 ) {
 					text.setAttribute("x", x - barsegmentlabelgap);
 					text.setAttribute("text-anchor", "end");
 				}				
@@ -184,12 +184,12 @@ Spotfire.initialize(async (mod) => {
 			
 			for(var i = 0; i < rowlabel.length; i++){
 				
-				var bar1 = bars2[i];
+				var bar1 = bars[i];
 				var barsegment1 = bar1.barsegments.find( obj => { return obj.label === rowlabel[i].formattedValue() });
 
 				if ( i + 1 < rowlabel.length ){
 
-					var bar2 = bars2[i + 1];
+					var bar2 = bars[i + 1];
 					var barsegment2 = bar2.barsegments.find( obj => { return obj.label === rowlabel[i + 1].formattedValue() });
 
 					var d = [
