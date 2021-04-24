@@ -172,8 +172,9 @@ Spotfire.initialize(async (mod) => {
 				
 				/**
 				 * Render Label
+				 */
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
-				if ( i == bars.length - 1 ) {
+				if ( i == bars2.length - 1 ) {
 					text.setAttribute("x", x - barsegmentlabelgap);
 					text.setAttribute("text-anchor", "end");
 				}				
@@ -188,35 +189,33 @@ Spotfire.initialize(async (mod) => {
 				else {
 					text.setAttribute("y", windowSize.height);					
 				}
-				text.innerHTML = barsegmentlabel;
+				text.innerHTML = barsegment.label;
 				glabels.appendChild(text);
-				 */
 
 
 				barheightcursor += barsegment.value * heightscale + barsegmentgap / (bar.barsegments.length - 1);
 			});
 		});
 
-		debugger;
-
 				
 		/**
 		 * Render rows
 		 */	
 		rows.forEach(function(row, j){
+			
 			var rowvalue = Number(row.continuous("Y").value());
 			var rowlabel = row.categorical("X").value();
 			var rowcolor = row.color().hexCode;
 			
 			for(var i = 0; i < rowlabel.length; i++){
 				
-				var bar1 = bars[i];
-				var barsegment1 = bar1.get(rowlabel[i].formattedValue());
+				var bar1 = bars2[i];
+				var barsegment1 = bar1.barsegments.find( obj => { return obj.label === rowlabel[i].formattedValue() });
 
 				if ( i + 1 < rowlabel.length ){
 
-					var bar2 = bars[i + 1];
-					var barsegment2 = bar2.get(rowlabel[i + 1].formattedValue());
+					var bar2 = bars2[i + 1];
+					var barsegment2 = bar2.barsegments.find( obj => { return obj.label === rowlabel[i + 1].formattedValue() });
 
 					var d = [
 						"M", barsegment1.x + barwidth, barsegment1.heightcursor,
@@ -240,6 +239,7 @@ Spotfire.initialize(async (mod) => {
 					
 					/** 
 					 * Marking
+					 */
 					path.onclick = function ( event ){
 						var rect = event.target;
 						var row = rect.getAttribute("row");
@@ -250,10 +250,10 @@ Spotfire.initialize(async (mod) => {
 							dataView.mark(new Array(rows[row]),"Replace");
 						}
 					};
-					 */
 					
 					/** 
 					 * Tool Tip
+					 */
 					path.onmouseover = function (event){
 						var rect = event.target;
 						var row = rows[rect.getAttribute("row")];						
@@ -264,7 +264,6 @@ Spotfire.initialize(async (mod) => {
 					path.onmouseout = function (event){
 	                    mod.controls.tooltip.hide();
 					}
-					 */
 					
 				}
 				barsegment1.heightcursor += rowvalue * heightscale;
