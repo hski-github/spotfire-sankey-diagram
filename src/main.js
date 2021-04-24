@@ -79,11 +79,40 @@ Spotfire.initialize(async (mod) => {
 			bars.push(bar);			
 		});
 
-		//debugger;
-		// let testfind2 = users.find(el => (el.id > 2));
+
+		//New appraoch
+		var bars2 = new Array();
+		
+		cataxislevels.forEach(function(level, i){
 			
+			var bar2 = { name: level.name, totalvalue: 0, barsegments: new Array() };
 			
-			
+			rows.forEach(function(row, j){
+				var rowvalue = Number(row.continuous("Y").value());
+				var rowlabel = row.categorical("X").value();
+				var rowlabelpart = rowlabel[i].formattedValue();
+				
+				var barsegment = bar2.barsegments.find( obj => { return obj.label === rowlabelpart });
+				
+				//TODOtypeof can maybe be removed
+				if (typeof barsegment === 'undefined'){
+					barsegment = { label: rowlabelpart, value: 0, rows: new Array() }; 
+					bar2.barsegments.push( barsegment );
+				}
+				
+				barsegment.rows.push( { rowid: j, rowvalue: rowvalue } );
+				barsegment.value += rowvalue;
+				
+				bar2.totalvalue += rowvalue;
+	
+			});			
+			bars2.push(bar2);			
+		});
+
+		//TODO Check for negative bar values and show error
+		//TODO Check if sum of all barvalues is the same for all paths
+
+		debugger;
 			
 		/**
 		 * Clear SVG and set constants
