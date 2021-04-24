@@ -111,7 +111,6 @@ Spotfire.initialize(async (mod) => {
 		//TODO Check for negative bar values and show error
 		//TODO Check if sum of all barvalues is the same for all bars
 
-		debugger;
 			
 		/**
 		 * Clear SVG and set constants
@@ -151,11 +150,11 @@ Spotfire.initialize(async (mod) => {
 		/**
 		 * Render bars
 		 */
-		for(var i in bars){
-			var bar = bars[i];
+		bars2.forEach(function(bar, i){
 			var barheightcursor = 0;
 			
-			bar.forEach(function(barsegment, barsegmentlabel){
+			bar.barsegments.forEach(function(barsegment, j){
+								
 				var x = bargap * i;
 				var y = barheightcursor;
 				barsegment.x = x;
@@ -166,14 +165,13 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("x", x);
 				rect.setAttribute("y", y);
 				rect.setAttribute("width", barwidth);
-				rect.setAttribute("height", barsegment.height * heightscale);
+				rect.setAttribute("height", barsegment.value * heightscale);
 				rect.setAttribute("style", "fill: grey;");
 				gbars.appendChild(rect);
 				
 				
 				/**
 				 * Render Label
-				 */
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
 				if ( i == bars.length - 1 ) {
 					text.setAttribute("x", x - barsegmentlabelgap);
@@ -192,11 +190,15 @@ Spotfire.initialize(async (mod) => {
 				}
 				text.innerHTML = barsegmentlabel;
 				glabels.appendChild(text);
+				 */
 
 
-				barheightcursor += barsegment.height * heightscale + barsegmentgap / (bar.size - 1);
+				barheightcursor += barsegment.value * heightscale + barsegmentgap / (bar.barsegments.length - 1);
 			});
-		}
+		});
+
+		debugger;
+
 				
 		/**
 		 * Render rows
@@ -238,7 +240,6 @@ Spotfire.initialize(async (mod) => {
 					
 					/** 
 					 * Marking
-					 */
 					path.onclick = function ( event ){
 						var rect = event.target;
 						var row = rect.getAttribute("row");
@@ -249,10 +250,10 @@ Spotfire.initialize(async (mod) => {
 							dataView.mark(new Array(rows[row]),"Replace");
 						}
 					};
+					 */
 					
 					/** 
 					 * Tool Tip
-					 */
 					path.onmouseover = function (event){
 						var rect = event.target;
 						var row = rows[rect.getAttribute("row")];						
@@ -263,6 +264,7 @@ Spotfire.initialize(async (mod) => {
 					path.onmouseout = function (event){
 	                    mod.controls.tooltip.hide();
 					}
+					 */
 					
 				}
 				barsegment1.heightcursor += rowvalue * heightscale;
