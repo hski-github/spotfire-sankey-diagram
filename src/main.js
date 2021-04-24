@@ -56,31 +56,6 @@ Spotfire.initialize(async (mod) => {
 		/**
 		 * Create data structure for bars
 		 */
-		var bars = new Array();
-		cataxislevels.forEach(function(level, i){
-			
-			var bar = new Map();
-			bar.height = 0;
-			rows.forEach(function(row, j){
-				var rowvalue = Number(row.continuous("Y").value());
-				var rowlabel = row.categorical("X").value();
-				var rowlabelpart = rowlabel[i].formattedValue();
-				
-				if ( !bar.has(rowlabelpart) ){ bar.set( rowlabelpart, { height: 0, rows: new Array() } ); }
-				
-				var barsegment = bar.get(rowlabelpart);
-				barsegment.rows.push( { rowid: j, rowvalue: rowvalue, position: barsegment.height } );
-				barsegment.height += rowvalue;
-				bar.height += rowvalue;
-	
-				//TODO Check for negative bar values and show error
-				//TODO Check if sum of all barvalues is the same for all paths
-			});			
-			bars.push(bar);			
-		});
-
-
-		//New appraoch
 		var bars2 = new Array();
 		
 		cataxislevels.forEach(function(level, i){
@@ -138,11 +113,11 @@ Spotfire.initialize(async (mod) => {
 		svgmod.appendChild(glabels);
 
 		const barwidth = 14;
-		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
+		const bargap = (windowSize.width - barwidth * (bars2.length) ) / (bars2.length - 1);
 
 		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
 		const barsegmentgap = windowSize.height * 0.1;
-		const heightscale = (windowSize.height - barsegmentgap) / bars[0].height;
+		const heightscale = (windowSize.height - barsegmentgap) / bars2[0].totalvalue;
 
 		const barsegmentlabelgap = 3;
 		
