@@ -94,7 +94,6 @@ Spotfire.initialize(async (mod) => {
 				
 				var barsegment = bar2.barsegments.find( obj => { return obj.label === rowlabelpart });
 				
-				//TODOtypeof can maybe be removed
 				if (typeof barsegment === 'undefined'){
 					barsegment = { label: rowlabelpart, value: 0, rows: new Array() }; 
 					bar2.barsegments.push( barsegment );
