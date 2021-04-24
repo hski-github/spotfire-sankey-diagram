@@ -109,7 +109,7 @@ Spotfire.initialize(async (mod) => {
 		});
 
 		//TODO Check for negative bar values and show error
-		//TODO Check if sum of all barvalues is the same for all paths
+		//TODO Check if sum of all barvalues is the same for all bars
 
 		debugger;
 			
