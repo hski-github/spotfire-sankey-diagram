@@ -49,13 +49,38 @@ Spotfire.initialize(async (mod) => {
         }
 
 
-		var cataxis = await dataView.categoricalAxis("X");
-		var cataxislevels = cataxis.hierarchy.levels;
+		/**
+		 * Clear SVG 
+		 */	
+		var svgmod = document.querySelector("#mod-svg");
+		svgmod.setAttribute("width", windowSize.width);
+		svgmod.setAttribute("height", windowSize.height);
+		svgmod.innerHTML = "";
+		svgmod.onclick = function (e) {
+            if (e.target === svgmod) {
+                dataView.clearMarking();
+            }
+        };
+		
+		var gbars = document.createElementNS("http://www.w3.org/2000/svg","g");
+		gbars.setAttribute("id", "mod-svg-bars");
+		svgmod.appendChild(gbars);
+		
+		var grows = document.createElementNS("http://www.w3.org/2000/svg","g");
+		grows.setAttribute("id", "mod-svg-rows");
+		svgmod.appendChild(grows);
+
+		var glabels = document.createElementNS("http://www.w3.org/2000/svg","g");
+		glabels.setAttribute("id", "mod-svg-labels");
+		svgmod.appendChild(glabels);
 		
 		
 		/**
 		 * Create data structure for bars
 		 */
+		var cataxis = await dataView.categoricalAxis("X");
+		var cataxislevels = cataxis.hierarchy.levels;
+		
 		var bars = new Array();
 		
 		cataxislevels.forEach(function(level, i){
@@ -86,32 +111,10 @@ Spotfire.initialize(async (mod) => {
 		//TODO Check for negative bar values and show error
 		//TODO Check if sum of all barvalues is the same for all bars
 
-			
+
 		/**
-		 * Clear SVG and set constants
-		 */	
-		var svgmod = document.querySelector("#mod-svg");
-		svgmod.setAttribute("width", windowSize.width);
-		svgmod.setAttribute("height", windowSize.height);
-		svgmod.innerHTML = "";
-		svgmod.onclick = function (e) {
-            if (e.target === svgmod) {
-                dataView.clearMarking();
-            }
-        };
-		
-		var gbars = document.createElementNS("http://www.w3.org/2000/svg","g");
-		gbars.setAttribute("id", "mod-svg-bars");
-		svgmod.appendChild(gbars);
-		
-		var grows = document.createElementNS("http://www.w3.org/2000/svg","g");
-		grows.setAttribute("id", "mod-svg-rows");
-		svgmod.appendChild(grows);
-
-		var glabels = document.createElementNS("http://www.w3.org/2000/svg","g");
-		glabels.setAttribute("id", "mod-svg-labels");
-		svgmod.appendChild(glabels);
-
+		 * Define constansts
+		 */
 		const barwidth = 14;
 		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
 
