@@ -60,27 +60,27 @@ Spotfire.initialize(async (mod) => {
 		
 		cataxislevels.forEach(function(level, i){
 			
-			var bar2 = { name: level.name, totalvalue: 0, barsegments: new Array() };
+			var bar = { name: level.name, totalvalue: 0, barsegments: new Array() };
 			
 			rows.forEach(function(row, j){
 				var rowvalue = Number(row.continuous("Y").value());
 				var rowlabel = row.categorical("X").value();
 				var rowlabelpart = rowlabel[i].formattedValue();
 				
-				var barsegment = bar2.barsegments.find( obj => { return obj.label === rowlabelpart });
+				var barsegment = bar.barsegments.find( obj => { return obj.label === rowlabelpart });
 				
 				if (typeof barsegment === 'undefined'){
 					barsegment = { label: rowlabelpart, value: 0, rows: new Array() }; 
-					bar2.barsegments.push( barsegment );
+					bar.barsegments.push( barsegment );
 				}
 				
 				barsegment.rows.push( { rowid: j, rowvalue: rowvalue, position: barsegment.value } );
 				barsegment.value += rowvalue;
 				
-				bar2.totalvalue += rowvalue;
+				bar.totalvalue += rowvalue;
 	
 			});			
-			bars.push(bar2);			
+			bars.push(bar);			
 		});
 
 		//TODO Check for negative bar values and show error
