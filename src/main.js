@@ -99,7 +99,7 @@ Spotfire.initialize(async (mod) => {
 					bar2.barsegments.push( barsegment );
 				}
 				
-				barsegment.rows.push( { rowid: j, rowvalue: rowvalue } );
+				barsegment.rows.push( { rowid: j, rowvalue: rowvalue, position: barsegment.value } );
 				barsegment.value += rowvalue;
 				
 				bar2.totalvalue += rowvalue;
