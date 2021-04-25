@@ -134,6 +134,9 @@ Spotfire.initialize(async (mod) => {
 			
 			bar.barsegments.forEach(function(barsegment, j){
 								
+				/**
+				 * Calculate coordinates and render rect
+				 */
 				barsegment.x = bargap * i;
 				barsegment.y = barheightcursor;
 				barsegment.heightcursor = barheightcursor;
@@ -146,9 +149,11 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("style", "fill: grey;");
 				gbars.appendChild(rect);
 				
+				barheightcursor += barsegment.value * heightscale + barsegmentgap / (bar.barsegments.length - 1);
+
 				
 				/**
-				 * Render Label
+				 * Render label
 				 */
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
 				if ( i == bars.length - 1 ) {
@@ -169,8 +174,6 @@ Spotfire.initialize(async (mod) => {
 				text.innerHTML = barsegment.label;
 				glabels.appendChild(text);
 
-
-				barheightcursor += barsegment.value * heightscale + barsegmentgap / (bar.barsegments.length - 1);
 			});
 		});
 
