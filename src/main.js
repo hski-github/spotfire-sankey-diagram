@@ -124,23 +124,36 @@ Spotfire.initialize(async (mod) => {
 
 		const barsegmentlabelgap = 3;
 		
-		
+
 		/**
-		 * Render bars
+		 * Calculate coordinates
 		 */
 		bars.forEach(function(bar, i){
 			
 			var barheightcursor = 0;
 			
 			bar.barsegments.forEach(function(barsegment, j){
-								
-				/**
-				 * Calculate coordinates and render rect
-				 */
+
 				barsegment.x = bargap * i;
 				barsegment.y = barheightcursor;
 				barsegment.heightcursor = barheightcursor;
 
+				barheightcursor += barsegment.value * heightscale + barsegmentgap / (bar.barsegments.length - 1);
+
+			});
+		});
+
+		
+		/**
+		 * Render bars
+		 */
+		bars.forEach(function(bar, i){
+			
+			bar.barsegments.forEach(function(barsegment, j){
+								
+				/**
+				 * Render rect
+				 */
 				var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
 				rect.setAttribute("x", barsegment.x);
 				rect.setAttribute("y", barsegment.y);
@@ -149,8 +162,6 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("style", "fill: grey;");
 				gbars.appendChild(rect);
 				
-				barheightcursor += barsegment.value * heightscale + barsegmentgap / (bar.barsegments.length - 1);
-
 				
 				/**
 				 * Render label
