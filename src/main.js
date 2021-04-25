@@ -49,36 +49,8 @@ Spotfire.initialize(async (mod) => {
         }
 
 
-		var cataxis = await dataView.categoricalAxis("X");
-		var cataxislevels = cataxis.hierarchy.levels;
-		
-		
 		/**
-		 * Create data structure for bars
-		 */
-		var bars = new Array();
-		for(var i in cataxislevels){
-			var bar = new Map();
-			bar.height = 0;
-			rows.forEach(function(row){
-				var rowvalue = Number(row.continuous("Y").value());
-				var rowlabel = row.categorical("X").value();
-				
-				var rowlabelpart = rowlabel[i].formattedValue();
-				if ( !bar.has(rowlabelpart) ){ bar.set( rowlabelpart, { height: 0 } ); }
-				
-				bar.get(rowlabelpart).height += rowvalue;
-				bar.height += rowvalue;
-	
-				//TODO Check for negative bar values and show error
-				//TODO Check if sum of all barvalues is the same for all paths
-			});			
-			bars.push(bar);			
-		}
-
-			
-		/**
-		 * Clear SVG and set constants
+		 * Clear SVG 
 		 */	
 		var svgmod = document.querySelector("#mod-svg");
 		svgmod.setAttribute("width", windowSize.width);
@@ -101,70 +73,137 @@ Spotfire.initialize(async (mod) => {
 		var glabels = document.createElementNS("http://www.w3.org/2000/svg","g");
 		glabels.setAttribute("id", "mod-svg-labels");
 		svgmod.appendChild(glabels);
+		
+		
+		/**
+		 * Create data structure for bars
+		 */
+		var cataxis = await dataView.categoricalAxis("X");
+		var cataxislevels = cataxis.hierarchy.levels;
+		
+		var bars = new Array();
+		
+		cataxislevels.forEach(function(level, i){
+			
+			var bar = { name: level.name, totalvalue: 0, barsegments: new Array() };
+			
+			rows.forEach(function(row, j){
+				var rowvalue = Number(row.continuous("Y").value());
+				var rowlabel = row.categorical("X").value();
+				var rowlabelpart = rowlabel[i].formattedValue();
+				
+				var barsegment = bar.barsegments.find( obj => { return obj.label === rowlabelpart });
+				
+				if (typeof barsegment === 'undefined'){
+					barsegment = { label: rowlabelpart, value: 0, rows: new Array() }; 
+					bar.barsegments.push( barsegment );
+				}
+				
+				barsegment.rows.push( { rowid: j, rowvalue: rowvalue } );
+				barsegment.value += rowvalue;
+				
+				bar.totalvalue += rowvalue;
+	
+			});			
+			bars.push(bar);			
+		});
 
-		const barwidth = 10;
+		//TODO Check for negative bar values and show error
+		//TODO Check if sum of all barvalues is the same for all bars
+
+
+		/**
+		 * Define constansts
+		 */
+		const barwidth = 14;
 		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
 
 		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
 		const barsegmentgap = windowSize.height * 0.1;
-		const heightscale = (windowSize.height - barsegmentgap) / bars[0].height;
+		const heightscale = (windowSize.height - barsegmentgap) / bars[0].totalvalue;
 
 		const barsegmentlabelgap = 3;
 		
+
+		/**
+		 * Calculate coordinates
+		 */
+		bars.forEach(function(bar, i){
+			bar.barsegments.sort((a, b) => a.label.localeCompare( b.label ) );						
+		});
+	
+		bars.forEach(function(bar, i){
+			
+			var barheightcursor = 0;
+			
+			bar.barsegments.forEach(function(barsegment, j){
+
+				barsegment.x = bargap * i;
+				barsegment.y = barheightcursor;
+
+				barsegment.rows.forEach(function(barsegmentrow, k){
+
+					barsegmentrow.y = barheightcursor;
+					barheightcursor += barsegmentrow.rowvalue * heightscale;
+					
+				});
+
+				barheightcursor += barsegmentgap / (bar.barsegments.length - 1);
+
+			});
+		});
+
 		
 		/**
 		 * Render bars
 		 */
-		for(var i in bars){
-			var bar = bars[i];
-			var barheightcursor = 0;
+		bars.forEach(function(bar, i){
 			
-			bar.forEach(function(barsegment, barsegmentlabel){
-				var x = bargap * i;
-				var y = barheightcursor;
-				barsegment.x = x;
-				barsegment.y = y;
-				barsegment.heightcursor = y;
-
+			bar.barsegments.forEach(function(barsegment, j){
+								
+				/**
+				 * Render rect
+				 */
 				var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-				rect.setAttribute("x", x);
-				rect.setAttribute("y", y);
+				rect.setAttribute("x", barsegment.x);
+				rect.setAttribute("y", barsegment.y);
 				rect.setAttribute("width", barwidth);
-				rect.setAttribute("height", barsegment.height * heightscale);
+				rect.setAttribute("height", barsegment.value * heightscale);
+				rect.setAttribute("style", "fill: grey;");
 				gbars.appendChild(rect);
 				
 				
 				/**
-				 * Render Label
+				 * Render label
 				 */
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
 				if ( i == bars.length - 1 ) {
-					text.setAttribute("x", x - barsegmentlabelgap);
+					text.setAttribute("x", barsegment.x - barsegmentlabelgap);
 					text.setAttribute("text-anchor", "end");
 				}				
 				else {
-					text.setAttribute("x", x + barwidth + barsegmentlabelgap);
+					text.setAttribute("x", barsegment.x + barwidth + barsegmentlabelgap);
 					text.setAttribute("text-anchor", "start");
 				}
-				if ( y < windowSize.height - barsegmentgap ){
+				if ( barsegment.y < windowSize.height - barsegmentgap ){
 					text.setAttribute("baseline-shift", "-1em");
-					text.setAttribute("y", y);
+					text.setAttribute("y", barsegment.y);
 				}
 				else {
 					text.setAttribute("y", windowSize.height);					
 				}
-				text.innerHTML = barsegmentlabel;
+				text.innerHTML = barsegment.label;
 				glabels.appendChild(text);
 
-
-				barheightcursor += barsegment.height * heightscale + barsegmentgap / (bar.size - 1);
 			});
-		}
+		});
+
 				
 		/**
 		 * Render rows
 		 */	
 		rows.forEach(function(row, j){
+			
 			var rowvalue = Number(row.continuous("Y").value());
 			var rowlabel = row.categorical("X").value();
 			var rowcolor = row.color().hexCode;
@@ -172,22 +211,24 @@ Spotfire.initialize(async (mod) => {
 			for(var i = 0; i < rowlabel.length; i++){
 				
 				var bar1 = bars[i];
-				var barsegment1 = bar1.get(rowlabel[i].formattedValue());
+				var barsegment1 = bar1.barsegments.find( obj => { return obj.label === rowlabel[i].formattedValue() });
+				var barsegmentrow1 = barsegment1.rows.find( obj => { return obj.rowid === j });
 
 				if ( i + 1 < rowlabel.length ){
 
 					var bar2 = bars[i + 1];
-					var barsegment2 = bar2.get(rowlabel[i + 1].formattedValue());
+					var barsegment2 = bar2.barsegments.find( obj => { return obj.label === rowlabel[i + 1].formattedValue() });
+					var barsegmentrow2 = barsegment2.rows.find( obj => { return obj.rowid === j });
 
 					var d = [
-						"M", barsegment1.x + barwidth, barsegment1.heightcursor,
-						"C", barsegment1.x + barwidth + bargap / 4, barsegment1.heightcursor,
-						barsegment2.x - bargap / 4, barsegment2.heightcursor,
-						barsegment2.x, barsegment2.heightcursor,
-						"L", barsegment2.x, barsegment2.heightcursor + rowvalue * heightscale, 
-						"C", barsegment2.x - bargap / 4, barsegment2.heightcursor + rowvalue * heightscale, 
-						barsegment1.x + barwidth + bargap / 4, barsegment1.heightcursor + rowvalue * heightscale,
-						barsegment1.x + barwidth, barsegment1.heightcursor + rowvalue * heightscale,
+						"M", barsegment1.x + barwidth, barsegmentrow1.y,
+						"C", barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y,
+						barsegment2.x - bargap / 4, barsegmentrow2.y,
+						barsegment2.x, barsegmentrow2.y,
+						"L", barsegment2.x, barsegmentrow2.y + rowvalue * heightscale, 
+						"C", barsegment2.x - bargap / 4, barsegmentrow2.y + rowvalue * heightscale, 
+						barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y + rowvalue * heightscale,
+						barsegment1.x + barwidth, barsegmentrow1.y + rowvalue * heightscale,
 						"Z"
 					].join(" ");
 										
@@ -228,7 +269,7 @@ Spotfire.initialize(async (mod) => {
 					}
 					
 				}
-				barsegment1.heightcursor += rowvalue * heightscale;
+
 			}
 
 		});
