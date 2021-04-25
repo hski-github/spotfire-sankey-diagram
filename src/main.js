@@ -129,6 +129,10 @@ Spotfire.initialize(async (mod) => {
 		 * Calculate coordinates
 		 */
 		bars.forEach(function(bar, i){
+			bar.barsegments.sort((a, b) => a.label.localeCompare( b.label ) );						
+		});
+	
+		bars.forEach(function(bar, i){
 			
 			var barheightcursor = 0;
 			
