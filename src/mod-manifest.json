@@ -3,7 +3,7 @@
     "version": "0.8",
     "name": "Sankey Diagram",
     "id": "spotfire-sankey-diagram-hski",
-    "icon": "icon.svg",
+    "icon": "sankey-icon.svg",
     "properties": [
         {
             "name": "myProperty",
