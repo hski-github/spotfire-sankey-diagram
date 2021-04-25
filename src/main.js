@@ -129,19 +129,18 @@ Spotfire.initialize(async (mod) => {
 		 * Render bars
 		 */
 		bars.forEach(function(bar, i){
+			
 			var barheightcursor = 0;
 			
 			bar.barsegments.forEach(function(barsegment, j){
 								
-				var x = bargap * i;
-				var y = barheightcursor;
-				barsegment.x = x;
-				barsegment.y = y;
-				barsegment.heightcursor = y;
+				barsegment.x = bargap * i;
+				barsegment.y = barheightcursor;
+				barsegment.heightcursor = barheightcursor;
 
 				var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-				rect.setAttribute("x", x);
-				rect.setAttribute("y", y);
+				rect.setAttribute("x", barsegment.x);
+				rect.setAttribute("y", barsegment.y);
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.value * heightscale);
 				rect.setAttribute("style", "fill: grey;");
@@ -153,16 +152,16 @@ Spotfire.initialize(async (mod) => {
 				 */
 				var text = document.createElementNS("http://www.w3.org/2000/svg","text");
 				if ( i == bars.length - 1 ) {
-					text.setAttribute("x", x - barsegmentlabelgap);
+					text.setAttribute("x", barsegment.x - barsegmentlabelgap);
 					text.setAttribute("text-anchor", "end");
 				}				
 				else {
-					text.setAttribute("x", x + barwidth + barsegmentlabelgap);
+					text.setAttribute("x", barsegment.x + barwidth + barsegmentlabelgap);
 					text.setAttribute("text-anchor", "start");
 				}
-				if ( y < windowSize.height - barsegmentgap ){
+				if ( barsegment.y < windowSize.height - barsegmentgap ){
 					text.setAttribute("baseline-shift", "-1em");
-					text.setAttribute("y", y);
+					text.setAttribute("y", barsegment.y);
 				}
 				else {
 					text.setAttribute("y", windowSize.height);					
