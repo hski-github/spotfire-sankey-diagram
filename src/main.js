@@ -136,7 +136,6 @@ Spotfire.initialize(async (mod) => {
 
 				barsegment.x = bargap * i;
 				barsegment.y = barheightcursor;
-				barsegment.heightcursor = barheightcursor;
 
 				barsegment.rows.forEach(function(barsegmentrow, k){
 
@@ -209,21 +208,23 @@ Spotfire.initialize(async (mod) => {
 				
 				var bar1 = bars[i];
 				var barsegment1 = bar1.barsegments.find( obj => { return obj.label === rowlabel[i].formattedValue() });
+				var barsegmentrow1 = barsegment1.rows.find( obj => { return obj.rowid === j });
 
 				if ( i + 1 < rowlabel.length ){
 
 					var bar2 = bars[i + 1];
 					var barsegment2 = bar2.barsegments.find( obj => { return obj.label === rowlabel[i + 1].formattedValue() });
+					var barsegmentrow2 = barsegment2.rows.find( obj => { return obj.rowid === j });
 
 					var d = [
-						"M", barsegment1.x + barwidth, barsegment1.heightcursor,
-						"C", barsegment1.x + barwidth + bargap / 4, barsegment1.heightcursor,
-						barsegment2.x - bargap / 4, barsegment2.heightcursor,
-						barsegment2.x, barsegment2.heightcursor,
-						"L", barsegment2.x, barsegment2.heightcursor + rowvalue * heightscale, 
-						"C", barsegment2.x - bargap / 4, barsegment2.heightcursor + rowvalue * heightscale, 
-						barsegment1.x + barwidth + bargap / 4, barsegment1.heightcursor + rowvalue * heightscale,
-						barsegment1.x + barwidth, barsegment1.heightcursor + rowvalue * heightscale,
+						"M", barsegment1.x + barwidth, barsegmentrow1.y,
+						"C", barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y,
+						barsegment2.x - bargap / 4, barsegmentrow2.y,
+						barsegment2.x, barsegmentrow2.y,
+						"L", barsegment2.x, barsegmentrow2.y + rowvalue * heightscale, 
+						"C", barsegment2.x - bargap / 4, barsegmentrow2.y + rowvalue * heightscale, 
+						barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y + rowvalue * heightscale,
+						barsegment1.x + barwidth, barsegmentrow1.y + rowvalue * heightscale,
 						"Z"
 					].join(" ");
 										
@@ -264,7 +265,7 @@ Spotfire.initialize(async (mod) => {
 					}
 					
 				}
-				barsegment1.heightcursor += rowvalue * heightscale;
+
 			}
 
 		});
