@@ -99,7 +99,7 @@ Spotfire.initialize(async (mod) => {
 					bar.barsegments.push( barsegment );
 				}
 				
-				barsegment.rows.push( { rowid: j, rowvalue: rowvalue, position: barsegment.value } );
+				barsegment.rows.push( { rowid: j, rowvalue: rowvalue } );
 				barsegment.value += rowvalue;
 				
 				bar.totalvalue += rowvalue;
@@ -138,7 +138,14 @@ Spotfire.initialize(async (mod) => {
 				barsegment.y = barheightcursor;
 				barsegment.heightcursor = barheightcursor;
 
-				barheightcursor += barsegment.value * heightscale + barsegmentgap / (bar.barsegments.length - 1);
+				barsegment.rows.forEach(function(barsegmentrow, k){
+
+					barsegmentrow.y = barheightcursor;
+					barheightcursor += barsegmentrow.rowvalue * heightscale;
+					
+				});
+
+				barheightcursor += barsegmentgap / (bar.barsegments.length - 1);
 
 			});
 		});
