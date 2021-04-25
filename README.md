@@ -2,6 +2,10 @@
 
 Spotfire mods visualization for Sankey diagram resp. Alluvial diagrams in Spotfire. 
 
+Sankey diagrams are visualizations used to show a flow from one set of values to another. 
+Sankeys are best used when you want to show a many-to-many mapping between two domains (e.g. universities and majors) or 
+multiple paths through a set of stages (e.g. change of votes over the last elections).
+
 In the category "X" axis you select the different layers, while the continuous "Y" axis is used for the size of the connections between the layers.   
 
 [![ScreenShot](/screenshots/screen-recording-spotfire-sankey.gif?raw=true)](/screenshots/screen-recording-spotfire-sankey.gif?raw=true)
