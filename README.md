@@ -16,7 +16,7 @@ Using R package for Alluvial as reference for layout and color. Started using D3
 ## Open Topics 
 - Better layout of labels for category values https://github.com/hski-github/spotfire-sankey-diagram/issues/3
 - Better layout in tool tip for information about category and continuous values https://github.com/hski-github/spotfire-sankey-diagram/issues/4
-- Better layout of path objects so that smallest are shown in the foreground https://github.com/hski-github/spotfire-sankey-diagram/issues/5
+- Better layout of path objects to simplify visualization with less crossings and clear flow https://github.com/hski-github/spotfire-sankey-diagram/issues/5
 
 
 ## References
