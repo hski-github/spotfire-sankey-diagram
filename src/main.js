@@ -90,6 +90,10 @@ Spotfire.initialize(async (mod) => {
 			rows.forEach(function(row, j){
 				var rowvalue = Number(row.continuous("Y").value());
 				var rowlabel = row.categorical("X").value();
+				var rowlabelpartarray = new Array();
+				rowlabel.forEach(function(row, j){
+					rowlabelpartarray.push(row.formattedValue());	
+				});
 				var rowlabelpart = rowlabel[i].formattedValue();
 				
 				var barsegment = bar.barsegments.find( obj => { return obj.label === rowlabelpart });
@@ -99,19 +103,7 @@ Spotfire.initialize(async (mod) => {
 					bar.barsegments.push( barsegment );
 				}
 				
-				if ( i == 0 && rowlabel.length == 1 ){
-					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: '', labelnext: '' } );
-				}
-				else if ( i == 0 && i + 1 < rowlabel.length ){
-					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: '',labelnext: rowlabel[i + 1].formattedValue() } );					
-				}	
-				else if ( i > 0 && i + 1 < rowlabel.length ){
-					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: rowlabel[i - 1].formattedValue(), labelnext: rowlabel[i + 1].formattedValue() } );					
-				} 
-				else{
-					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: rowlabel[i - 1].formattedValue(), labelnext: '' } );
-				}
-				
+				barsegment.rows.push( { rowid: j, rowvalue: rowvalue, label: rowlabelpartarray, labellevel: i } );
 				barsegment.value += rowvalue;
 				
 				bar.totalvalue += rowvalue;
@@ -146,10 +138,14 @@ Spotfire.initialize(async (mod) => {
 			bar.barsegments.forEach(function(barsegment, j){
 				barsegment.rows.sort((a, b) => 
 					{
-						if (a.labelprev){
-							return a.labelprev.localeCompare( b.labelprev ); 
+						var k = a.labellevel;
+						if (k > 0){
+							return a.label[k-1].localeCompare( b.label[k-1] ); 
 						}
-						return a.labelnext.localeCompare( b.labelnext ); 
+						if (k < a.label.length - 1 ){
+							return a.label[k+1].localeCompare( b.label[k+1] );
+						}
+						else return 0;
 					}
 				);
 			});
