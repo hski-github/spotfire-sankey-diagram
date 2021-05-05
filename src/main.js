@@ -99,7 +99,19 @@ Spotfire.initialize(async (mod) => {
 					bar.barsegments.push( barsegment );
 				}
 				
-				barsegment.rows.push( { rowid: j, rowvalue: rowvalue } );
+				if ( i == 0 && rowlabel.length == 1 ){
+					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: '', labelnext: '' } );
+				}
+				else if ( i == 0 && i + 1 < rowlabel.length ){
+					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: '',labelnext: rowlabel[i + 1].formattedValue() } );					
+				}	
+				else if ( i > 0 && i + 1 < rowlabel.length ){
+					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: rowlabel[i - 1].formattedValue(), labelnext: rowlabel[i + 1].formattedValue() } );					
+				} 
+				else{
+					barsegment.rows.push( { rowid: j, rowvalue: rowvalue, labelprev: rowlabel[i - 1].formattedValue(), labelnext: '' } );
+				}
+				
 				barsegment.value += rowvalue;
 				
 				bar.totalvalue += rowvalue;
@@ -130,6 +142,17 @@ Spotfire.initialize(async (mod) => {
 		 */
 		bars.forEach(function(bar, i){
 			bar.barsegments.sort((a, b) => a.label.localeCompare( b.label ) );						
+
+			bar.barsegments.forEach(function(barsegment, j){
+				barsegment.rows.sort((a, b) => 
+					{
+						if (a.labelprev){
+							return a.labelprev.localeCompare( b.labelprev ); 
+						}
+						return a.labelnext.localeCompare( b.labelnext ); 
+					}
+				);
+			});
 		});
 	
 		bars.forEach(function(bar, i){
