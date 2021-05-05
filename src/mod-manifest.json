@@ -1,6 +1,6 @@
 {
     "apiVersion": "1.0",
-    "version": "0.8",
+    "version": "0.9",
     "name": "Sankey Diagram",
     "id": "spotfire-sankey-diagram-hski",
     "icon": "sankey-icon.svg",
