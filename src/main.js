@@ -189,9 +189,25 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.value * heightscale);
 				rect.setAttribute("style", "fill: grey;");
+				rect.setAttribute("bar", i);
+				rect.setAttribute("barsegment", j);
 				gbars.appendChild(rect);
+
 				
+				/** 
+				 * Tool Tip
+				 */
+				rect.onmouseover = function (event){
+					var barid = event.target.getAttribute("bar");
+					var barsegmentid = event.target.getAttribute("barsegment");
+					var barsegment = bars[barid].barsegments[barsegmentid];
+                    mod.controls.tooltip.show(barsegment.label + "\r\n" + barsegment.value);
+				};
+				rect.onmouseout = function (event){
+                    mod.controls.tooltip.hide();
+				}
 				
+
 				/**
 				 * Render label
 				 */
