@@ -255,8 +255,6 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
-					path.setAttribute("rowvalue", rowvalue);
-					path.setAttribute("rowlabel", rowlabel);
 					grows.append(path);
 					
 					/** 
@@ -264,12 +262,12 @@ Spotfire.initialize(async (mod) => {
 					 */
 					path.onclick = function ( event ){
 						var rect = event.target;
-						var row = rect.getAttribute("row");
+						var row = rows[rect.getAttribute("row")];
 						if (event.shiftKey) {
-							dataView.mark(new Array(rows[row]),"Add");
+							dataView.mark(new Array(row),"Add");
 						}
 						else {
-							dataView.mark(new Array(rows[row]),"Replace");
+							dataView.mark(new Array(row),"Replace");
 						}
 					};
 					
@@ -279,7 +277,7 @@ Spotfire.initialize(async (mod) => {
 					path.onmouseover = function (event){
 						var rect = event.target;
 						var row = rows[rect.getAttribute("row")];						
-						var rowvalue = Number(row.continuous("Y").formattedValue());
+						var rowvalue = row.continuous("Y").formattedValue();
 						var rowlabel = row.categorical("X").formattedValue();
 	                    mod.controls.tooltip.show(rowlabel + "\r\n" + rowvalue);
 					};
