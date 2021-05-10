@@ -207,6 +207,28 @@ Spotfire.initialize(async (mod) => {
                     mod.controls.tooltip.hide();
 				}
 				
+				
+				/** 
+				 * Marking
+				 */
+				rect.onclick = function ( event ){
+					var barid = event.target.getAttribute("bar");
+					var barsegmentid = event.target.getAttribute("barsegment");
+					var barsegment = bars[barid].barsegments[barsegmentid];
+
+					var markrows = new Array();
+					barsegment.rows.forEach(function(barsegmentrow, k){
+						markrows.push(rows[barsegmentrow.rowid]);
+					});
+
+					if (event.shiftKey) {
+						dataView.mark(markrows,"Add");
+					}
+					else {
+						dataView.mark(markrows,"Replace");
+					}
+				};
+
 
 				/**
 				 * Render label
@@ -271,6 +293,7 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
+					path.setAttribute("rowvalue", rowvalue); 
 					grows.append(path);
 					
 					/** 
