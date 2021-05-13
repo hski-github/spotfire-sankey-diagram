@@ -28,7 +28,7 @@ The data contains how many people voted in 2013 for one party and in 2017 for th
 - (Optional) Adjust the colors to the typical colors of the partys
 - (Optional) Add a data table as detailed visualization. 
 
-[![ScreenShot](/examples/DEU Bundestagswahl Waehlerwanderung Sankey Diagram.png?raw=true)](/examples/DEU Bundestagswahl Waehlerwanderung Sankey Diagram.png?raw=true)
+See the result here https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%20Sankey%20Diagram.png
 
 As a more complex example from data preparation perspective lets use data from Hardvard Dataverse https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX  containing constituency (state-level) returns for elections to the U.S. presidency. 
 
