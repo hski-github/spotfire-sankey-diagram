@@ -34,8 +34,12 @@ As a more complex example from data preparation perspective lets use data from H
 
 - Download the data as CSV from Hardvard Dataverse 
 - Import the data into Spotfire 
-- Filter for year 2020, 2016 and 2014
-- to be continued  
+- In the data panel 
+-- Filter rows for [year]>=2012
+-- Create a new calculated column maxcandidatevotes using Max([candidatevotes]) Over ([year],[state])=[candidatevotes]
+-- Filter rows for [maxcandidatevotes]=True  
+-- Pivot the data with one row per state and create columns for candidate and party_simplified per year
+- to be continued
 
 
 ## Open Topics 
