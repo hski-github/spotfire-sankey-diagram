@@ -6,7 +6,12 @@ Spotfire.initialize(async (mod) => {
     /**
      * Create the read function.
      */
-    const reader = mod.createReader(mod.visualization.data(), mod.windowSize(), mod.property("myProperty"));
+    const reader = mod.createReader(
+		mod.visualization.data(), 
+		mod.windowSize(),
+		mod.visualization.axis("X"),
+		mod.visualization.axis("Y")
+	);
 
     /**
      * Store the context.
@@ -23,7 +28,7 @@ Spotfire.initialize(async (mod) => {
      * @param {Spotfire.Size} windowSize
      * @param {Spotfire.ModProperty<string>} prop
      */
-    async function render(dataView, windowSize, prop) {
+    async function render(dataView, windowSize, xAxis, yAxis) {
         /**
          * Check the data view for errors
          */
@@ -189,9 +194,51 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.value * heightscale);
 				rect.setAttribute("style", "fill: grey;");
+				rect.setAttribute("bar", i);
+				rect.setAttribute("barsegment", j);
 				gbars.appendChild(rect);
+
+				
+				/** 
+				 * Tool Tip
+				 */
+				rect.onmouseover = function (event){
+					var barid = event.target.getAttribute("bar");
+					var barsegmentid = event.target.getAttribute("barsegment");
+					var barsegment = bars[barid].barsegments[barsegmentid];
+					
+					var tooltip = yAxis.parts[0].displayName + ": " + barsegment.value + "\r\n" +
+						xAxis.parts[barid].displayName + ": " + barsegment.label;
+					
+                    mod.controls.tooltip.show(tooltip);
+				};
+				rect.onmouseout = function (event){
+                    mod.controls.tooltip.hide();
+				}
 				
 				
+				/** 
+				 * Marking
+				 */
+				rect.onclick = function ( event ){
+					var barid = event.target.getAttribute("bar");
+					var barsegmentid = event.target.getAttribute("barsegment");
+					var barsegment = bars[barid].barsegments[barsegmentid];
+
+					var markrows = new Array();
+					barsegment.rows.forEach(function(barsegmentrow, k){
+						markrows.push(rows[barsegmentrow.rowid]);
+					});
+
+					if (event.shiftKey) {
+						dataView.mark(markrows,"Add");
+					}
+					else {
+						dataView.mark(markrows,"Replace");
+					}
+				};
+
+
 				/**
 				 * Render label
 				 */
@@ -255,8 +302,7 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("d", d);
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
-					path.setAttribute("rowvalue", rowvalue);
-					path.setAttribute("rowlabel", rowlabel);
+					path.setAttribute("rowvalue", rowvalue); 
 					grows.append(path);
 					
 					/** 
@@ -264,12 +310,12 @@ Spotfire.initialize(async (mod) => {
 					 */
 					path.onclick = function ( event ){
 						var rect = event.target;
-						var row = rect.getAttribute("row");
+						var row = rows[rect.getAttribute("row")];
 						if (event.shiftKey) {
-							dataView.mark(new Array(rows[row]),"Add");
+							dataView.mark(new Array(row),"Add");
 						}
 						else {
-							dataView.mark(new Array(rows[row]),"Replace");
+							dataView.mark(new Array(row),"Replace");
 						}
 					};
 					
@@ -277,11 +323,17 @@ Spotfire.initialize(async (mod) => {
 					 * Tool Tip
 					 */
 					path.onmouseover = function (event){
-						var rect = event.target;
-						var row = rows[rect.getAttribute("row")];						
-						var rowvalue = Number(row.continuous("Y").formattedValue());
-						var rowlabel = row.categorical("X").formattedValue();
-	                    mod.controls.tooltip.show(rowlabel + "\r\n" + rowvalue);
+						var row = rows[event.target.getAttribute("row")];
+
+						var yFormattedValue = row.continuous("Y").formattedValue();
+						var tooltip = yAxis.parts[0].displayName + ": " + yFormattedValue + "\r\n";
+						
+						var xValue = row.categorical("X").value();
+						for(var i = 0; i < xValue.length; i++){
+							tooltip += xAxis.parts[i].displayName + ": " + xValue[i].formattedValue() + "\r\n";
+						}
+						
+	                    mod.controls.tooltip.show(tooltip);
 					};
 					path.onmouseout = function (event){
 	                    mod.controls.tooltip.hide();
