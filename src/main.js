@@ -206,7 +206,11 @@ Spotfire.initialize(async (mod) => {
 					var barid = event.target.getAttribute("bar");
 					var barsegmentid = event.target.getAttribute("barsegment");
 					var barsegment = bars[barid].barsegments[barsegmentid];
-                    mod.controls.tooltip.show(barsegment.label + "\r\n" + barsegment.value);
+					
+					var tooltip = yAxis.parts[0].displayName + ": " + barsegment.value + "\r\n" +
+						xAxis.parts[barid].displayName + ": " + barsegment.label;
+					
+                    mod.controls.tooltip.show(tooltip);
 				};
 				rect.onmouseout = function (event){
                     mod.controls.tooltip.hide();
