@@ -6,7 +6,12 @@ Spotfire.initialize(async (mod) => {
     /**
      * Create the read function.
      */
-    const reader = mod.createReader(mod.visualization.data(), mod.windowSize(), mod.property("myProperty"));
+    const reader = mod.createReader(
+		mod.visualization.data(), 
+		mod.windowSize(),
+		mod.visualization.axis("X"),
+		mod.visualization.axis("Y")
+	);
 
     /**
      * Store the context.
@@ -23,7 +28,7 @@ Spotfire.initialize(async (mod) => {
      * @param {Spotfire.Size} windowSize
      * @param {Spotfire.ModProperty<string>} prop
      */
-    async function render(dataView, windowSize, prop) {
+    async function render(dataView, windowSize, xAxis, yAxis) {
         /**
          * Check the data view for errors
          */
@@ -315,10 +320,18 @@ Spotfire.initialize(async (mod) => {
 					 */
 					path.onmouseover = function (event){
 						var rect = event.target;
-						var row = rows[rect.getAttribute("row")];						
+						var row = rows[rect.getAttribute("row")];
+						
 						var rowvalue = row.continuous("Y").formattedValue();
-						var rowlabel = row.categorical("X").formattedValue();
-	                    mod.controls.tooltip.show(rowlabel + "\r\n" + rowvalue);
+						var rowlabel = row.categorical("X").value();
+						
+						var tooltip = yAxis.parts[0].displayName + ": " + rowvalue + "\r\n";
+						
+						for(var i = 0; i < rowlabel.length; i++){
+							tooltip += xAxis.parts[i].displayName + ": " + rowlabel[i].formattedValue() + "\r\n";
+						}
+						
+	                    mod.controls.tooltip.show(tooltip);
 					};
 					path.onmouseout = function (event){
 	                    mod.controls.tooltip.hide();
