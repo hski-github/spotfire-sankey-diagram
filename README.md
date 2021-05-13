@@ -16,7 +16,7 @@ Using R package for Alluvial as reference for layout and color. Started using D3
 
 Lets analyze as an exmaple electoral swing and visualize how votes of people or states changed comparing two or more elections. 
 
-Please find a dataset about national elections in Germany in the `examples` folder `DEU Bundestagswahl Waehlerwanderung 2013 2017.csv` ![click here](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%202013%202017.csv) which contains data from tv news channel ![Tagesschau](https://www.tagesschau.de/wahl/archiv/2017-09-24-BT-DE/index.shtml). 
+Please find a dataset about national elections in Germany here [`examples/DEU Bundestagswahl Waehlerwanderung 2013 2017.csv`](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%202013%202017.csv) which contains data from tv news channel [Tagesschau](https://www.tagesschau.de/wahl/archiv/2017-09-24-BT-DE/index.shtml). 
 
 The data contains how many people voted in 2013 for one party and in 2017 for the same or another party. For example 11m people voted in 2013 for Union and also in 2017, 5,9m peopled voted in 2013 for SPD and also in 2017, while 800k people voted in 2013 for Union and changed to SPD in 2017, and 820k people changed from Union to SPD.
 
@@ -28,9 +28,9 @@ The data contains how many people voted in 2013 for one party and in 2017 for th
 - (Optional) Adjust the colors to the typical colors of the partys
 - (Optional) Add a data table as detailed visualization. 
 
-See the result here https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%20Sankey%20Diagram.png
+![DEU Bundestagswahl Waehlerwanderung Sankey](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%20Sankey%20Diagram.png?raw=true)
 
-As a more complex example from data preparation perspective lets use data from Hardvard Dataverse https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX  containing constituency (state-level) returns for elections to the U.S. presidency. 
+As a more complex example from data preparation perspective lets use data from [Hardvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX)  containing constituency (state-level) returns for elections to the U.S. presidency. 
 
 - Download the data as CSV from Hardvard Dataverse 
 - Import the data into Spotfire 
