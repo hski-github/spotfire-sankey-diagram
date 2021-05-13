@@ -11,7 +11,36 @@ In the category "X" axis you select the different layers, while the continuous "
 [![ScreenShot](/screenshots/screen-recording-spotfire-sankey.gif?raw=true)](/screenshots/screen-recording-spotfire-sankey.gif?raw=true)
 
 Using R package for Alluvial as reference for layout and color. Started using D3 resp. Google Charts for Sankey, but then switched to plain SVG implementation due to constraints regarding coloring and  sorting.
- 
+
+## Example
+
+Lets analyze as an exmaple electoral swing and visualize how votes of people or states changed comparing two or more elections. 
+
+Please find a dataset about national elections in Germany here [`examples/DEU Bundestagswahl Waehlerwanderung 2013 2017.csv`](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%202013%202017.csv) which contains data from tv news channel [Tagesschau](https://www.tagesschau.de/wahl/archiv/2017-09-24-BT-DE/index.shtml). 
+
+The data contains how many people voted in 2013 for one party and in 2017 for the same or another party. For example 11m people voted in 2013 for Union and also in 2017, 5,9m peopled voted in 2013 for SPD and also in 2017, while 800k people voted in 2013 for Union and changed to SPD in 2017, and 820k people changed from Union to SPD.
+
+- Download the dataset from the examples folder
+- Load the dataset to TIBCO Spotfire
+- Add a Sankey diagram and add "Stimmen" resp. "Sum(Stimmen)" to X axis 
+- Add "Bundestagswahl 2013" and "Bundestagswahl 2017" to the Y axis
+- Put "Bundestagswahl 2017" to colors 
+- (Optional) Adjust the colors to the typical colors of the partys
+- (Optional) Add a data table as detailed visualization. 
+
+![DEU Bundestagswahl Waehlerwanderung Sankey](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%20Sankey%20Diagram.png?raw=true)
+
+As a more complex example from data preparation perspective lets use data from [Hardvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX)  containing constituency (state-level) returns for elections to the U.S. presidency. 
+
+- Download the data as CSV from Hardvard Dataverse 
+- Import the data into Spotfire 
+- In the data panel 
+-- Filter rows for [year]>=2012
+-- Create a new calculated column maxcandidatevotes using Max([candidatevotes]) Over ([year],[state])=[candidatevotes]
+-- Filter rows for [maxcandidatevotes]=True  
+-- Pivot the data with one row per state and create columns for candidate and party_simplified per year
+- to be continued
+
 
 ## Open Topics 
 - Better layout of labels for category values https://github.com/hski-github/spotfire-sankey-diagram/issues/3
