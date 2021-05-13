@@ -319,16 +319,14 @@ Spotfire.initialize(async (mod) => {
 					 * Tool Tip
 					 */
 					path.onmouseover = function (event){
-						var rect = event.target;
-						var row = rows[rect.getAttribute("row")];
+						var row = rows[event.target.getAttribute("row")];
+
+						var yFormattedValue = row.continuous("Y").formattedValue();
+						var tooltip = yAxis.parts[0].displayName + ": " + yFormattedValue + "\r\n";
 						
-						var rowvalue = row.continuous("Y").formattedValue();
-						var rowlabel = row.categorical("X").value();
-						
-						var tooltip = yAxis.parts[0].displayName + ": " + rowvalue + "\r\n";
-						
-						for(var i = 0; i < rowlabel.length; i++){
-							tooltip += xAxis.parts[i].displayName + ": " + rowlabel[i].formattedValue() + "\r\n";
+						var xValue = row.categorical("X").value();
+						for(var i = 0; i < xValue.length; i++){
+							tooltip += xAxis.parts[i].displayName + ": " + xValue[i].formattedValue() + "\r\n";
 						}
 						
 	                    mod.controls.tooltip.show(tooltip);
