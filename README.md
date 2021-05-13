@@ -41,6 +41,9 @@ As a more complex example from data preparation perspective lets use data from [
 -- Pivot the data with one row per state and create columns for candidate and party_simplified per year
 - to be continued
 
+![US Elections Sankey Diagram](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%20Sankey%20Diagram.png?raw=true)
+
+
 
 ## Open Topics 
 - Better layout of labels for category values https://github.com/hski-github/spotfire-sankey-diagram/issues/3
