@@ -22,6 +22,8 @@ The Sankey diagram below shows the number of electoral votes per respective stat
 
 The data used for this visualization comes from [Hardvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX) containing constituency (state-level) returns for elections to the US presidency. The data preparation contains a couple of steps to filter and pivot the data to get it in the right shape for the Sankey diagram like above. Because the Sankey diagram also supports marking, you can create a detailed table visualisation then listing the actual state names and electoral votes to give you more details. 
 
+![US Elections Sankey Diagram with Marking and Details](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%20Sankey%20Diagram%20with%20Marking%20and%20Details.png?raw=true)
+
 The data set in the required format for the Sankey diagram with one row per state you find here [examples/US Elections 2012 2016 2020.csv](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%202012%202016%202020.csv) 
 
 To create the Sankey diagram im Spotfire
