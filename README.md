@@ -25,8 +25,8 @@ The data contains how many people voted in 2013 for one party and in 2017 for th
 - Add a Sankey diagram and add "Stimmen" resp. "Sum(Stimmen)" to X axis 
 - Add "Bundestagswahl 2013" and "Bundestagswahl 2017" to the Y axis
 - Put "Bundestagswahl 2017" to colors 
-- (Optional) Adjust the colors to the typical colors of the partys
-- (Optional) Add a data table as detailed visualization. 
+- Adjust the colors to the typical colors of the partys
+
 
 ![DEU Bundestagswahl Waehlerwanderung Sankey](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%20Sankey%20Diagram.png?raw=true)
 
@@ -34,12 +34,11 @@ As a more complex example from data preparation perspective lets use data from [
 
 - Download the data as CSV from Hardvard Dataverse 
 - Import the data into Spotfire 
-- In the data panel 
--- Filter rows for [year]>=2012
--- Create a new calculated column maxcandidatevotes using Max([candidatevotes]) Over ([year],[state])=[candidatevotes]
--- Filter rows for [maxcandidatevotes]=True  
--- Pivot the data with one row per state and create columns for candidate and party_simplified per year
-- to be continued
+- In the data panel filter rows for [year]>=2012, create a new calculated column maxcandidatevotes using Max([candidatevotes]) Over ([year],[state])=[candidatevotes] and filter rows for [maxcandidatevotes]=True  
+- In the data panel then pivot the data with one row per state and create columns for candidate and party_simplified per year
+- Add an Sankey diagram and add "Electoral Votes" to the X axis
+- Add "Candidate 2012", "Candidate 2016" and "Candidate 2020" ro the Y axis
+- Add "Candidate 2020" or "Party 2020" to colors and adjust the colors to typical colors of the partys 
 
 ![US Elections Sankey Diagram](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%20Sankey%20Diagram.png?raw=true)
 
@@ -48,7 +47,7 @@ As a more complex example from data preparation perspective lets use data from [
 ## Open Topics 
 - Better layout of labels for category values https://github.com/hski-github/spotfire-sankey-diagram/issues/3
 - Better layout of path objects to simplify visualization with less crossings and clear flow https://github.com/hski-github/spotfire-sankey-diagram/issues/5
-
+- Currently the order of values is done alphabetically, as an alternative option could be sorted by highest value, but also custom order should be supported
 
 ## References
 - https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html
