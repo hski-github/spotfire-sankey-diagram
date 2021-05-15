@@ -29,6 +29,7 @@ Spotfire.initialize(async (mod) => {
      * @param {Spotfire.ModProperty<string>} prop
      */
     async function render(dataView, windowSize, xAxis, yAxis) {
+	
         /**
          * Check the data view for errors
          */
@@ -60,24 +61,12 @@ Spotfire.initialize(async (mod) => {
 		var svgmod = document.querySelector("#mod-svg");
 		svgmod.setAttribute("width", windowSize.width);
 		svgmod.setAttribute("height", windowSize.height);
-		svgmod.innerHTML = "";
+		svgmod.querySelectorAll("g").forEach(function(g){ g.innerHTML = "";});
 		svgmod.onclick = function (e) {
             if (e.target === svgmod) {
                 dataView.clearMarking();
             }
         };
-		
-		var gbars = document.createElementNS("http://www.w3.org/2000/svg","g");
-		gbars.setAttribute("id", "mod-svg-bars");
-		svgmod.appendChild(gbars);
-		
-		var grows = document.createElementNS("http://www.w3.org/2000/svg","g");
-		grows.setAttribute("id", "mod-svg-rows");
-		svgmod.appendChild(grows);
-
-		var glabels = document.createElementNS("http://www.w3.org/2000/svg","g");
-		glabels.setAttribute("id", "mod-svg-labels");
-		svgmod.appendChild(glabels);
 		
 		
 		/**
@@ -135,7 +124,7 @@ Spotfire.initialize(async (mod) => {
 		
 
 		/**
-		 * Calculate coordinates
+		 * Sort bars and barsegments
 		 */
 		bars.forEach(function(bar, i){
 			bar.barsegments.sort((a, b) => a.label.localeCompare( b.label ) );						
@@ -155,7 +144,11 @@ Spotfire.initialize(async (mod) => {
 				);
 			});
 		});
+
 	
+		/**
+		 * Calculate coordinates
+		 */
 		bars.forEach(function(bar, i){
 			
 			var barheightcursor = 0;
@@ -196,7 +189,7 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("style", "fill: grey;");
 				rect.setAttribute("bar", i);
 				rect.setAttribute("barsegment", j);
-				gbars.appendChild(rect);
+				document.querySelector("#mod-svg-bars").appendChild(rect);
 
 				
 				/** 
@@ -259,7 +252,7 @@ Spotfire.initialize(async (mod) => {
 					text.setAttribute("y", windowSize.height);					
 				}
 				text.innerHTML = barsegment.label;
-				glabels.appendChild(text);
+				document.querySelector("#mod-svg-labels").appendChild(text);
 
 			});
 		});
@@ -303,7 +296,7 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
 					path.setAttribute("rowvalue", rowvalue); 
-					grows.append(path);
+					document.querySelector("#mod-svg-rows").append(path);
 					
 					/** 
 					 * Marking
@@ -347,18 +340,17 @@ Spotfire.initialize(async (mod) => {
 		
 		
         /**
-         * Sorting of rows so that big rows are not in front of small rows
+         * Sorting of rows so that small rows are in front of big rows
          */
-		paths = Array.from(grows.children);
+		paths = Array.from(document.querySelector("#mod-svg-rows").children);
 		paths.sort(function(a, b) {
 			avalue = Number(a.getAttribute("rowvalue"));
 			bvalue = Number(b.getAttribute("rowvalue"));
   			return bvalue - avalue;
 		});
-
-		for (i = 0; i < paths.length; ++i) {
-  			grows.appendChild(paths[i]);
-		}
+		paths.forEach(function(path){
+  			document.querySelector("#mod-svg-rows").appendChild(path);
+		});
 		
 			
         /**
