@@ -82,21 +82,23 @@ Spotfire.initialize(async (mod) => {
 			var bar = { name: level.name, totalvalue: 0, barsegments: new Array() };
 			
 			rows.forEach(function(row, j){
+				
 				var rowvalue = Number(row.continuous("Y").value());
 				var rowlabel = row.categorical("X").value();
-				var rowlabelpartarray = new Array();
-				rowlabel.forEach(function(row, j){
-					rowlabelpartarray.push(row.formattedValue());	
-				});
 				var rowlabelpart = rowlabel[i].formattedValue();
+				var rowlabelpartkey = rowlabel[i].key;
 				
-				var barsegment = bar.barsegments.find( obj => { return obj.label === rowlabelpart });
+				var barsegment = bar.barsegments.find( obj => { return obj.labelkey === rowlabelpartkey });
 				
 				if (typeof barsegment === 'undefined'){
-					barsegment = { label: rowlabelpart, value: 0, rows: new Array() }; 
+					barsegment = { label: rowlabelpart, labelkey: rowlabelpartkey, value: 0, rows: new Array() }; 
 					bar.barsegments.push( barsegment );
 				}
 				
+				var rowlabelpartarray = new Array();
+				rowlabel.forEach(function(rowlabelpart){
+					rowlabelpartarray.push(rowlabelpart.key);	
+				});
 				barsegment.rows.push( { rowid: j, rowvalue: rowvalue, label: rowlabelpartarray, labellevel: i } );
 				barsegment.value += rowvalue;
 				
