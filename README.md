@@ -24,21 +24,26 @@ The data used for this visualization comes from [Hardvard Dataverse](https://dat
 
 <img src="https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%20Sankey%20Diagram%20with%20Marking%20and%20Details.png?raw=true" width="70%">
 
-The data set in the required format for the Sankey diagram with one row per state you find here [examples/US Elections 2012 2016 2020.csv](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%202012%202016%202020.csv) 
+The data set for the Sankey diagram required one row per state. See also here [examples/US Elections 2012 2016 2020.csv](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%202012%202016%202020.csv) 
 
 To create the Sankey diagram im Spotfire
 
-- Import the data into Spotfire 
-- Add an Sankey diagram and add `Electoral Votes` to the X axis
-- Add `Candidate 2012`, `Candidate 2016` and `Candidate 2020` ro the Y axis
-- Add `Candidate 2020` or `Party 2020` to colors and adjust the colors to typical colors of the partys 
+1. Import the data into Spotfire 
+2. Add an Sankey diagram and add `Electoral Votes` to the X axis
+3. Add `Candidate 2012`, `Candidate 2016` and `Candidate 2020` ro the Y axis
+4. Add `Candidate 2020` or `Party 2020` to colors and adjust the colors to typical colors of the partys 
 
-To create the required data structure with one line per entity and categories as columns from the original data source from [Hardvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX) several steps have to be done in Spotfire
+To create the required data structure with one line per entity and categories as columns from the original data source from [Hardvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX) several steps have to be done in Spotfire. These steps are not related to the Sankey diagram itself. They are listed here for reference how data was transformed in Spotfire to bring the data in the right structure for the Sankey. 
 
-- Download the data as CSV from Hardvard Dataverse 
-- Import the data into Spotfire 
-- In the data panel a) filter rows for `[year]>=2012`, b) create a new calculated column to identify why candidate got the most votes per state with `maxcandidatevotes using Max([candidatevotes]) Over ([year],[state])=[candidatevotes]` c) filter rows for `[maxcandidatevotes]=True`  
-- In the data panel then pivot the data with one row per state and create columns for candidate and party_simplified per year
+1. Download the data as CSV from Hardvard Dataverse 
+2. Import the data into Spotfire 
+3. From the data panel 
+   1. Filter rows for `[year]>=2012`
+   2. Create a new calculated column to identify why candidate got the most votes per state with `maxcandidatevotes using Max([candidatevotes]) Over ([year],[state])=[candidatevotes]` 
+   3. Filter rows for `[maxcandidatevotes]=True`  
+4. From the data panel, then pivot the data with one row per state and create columns for candidate and party_simplified per year
+
+The result of your data preparation should look similar to what you can also download from here [examples/US Elections 2012 2016 2020.csv](https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/US%20Elections%202012%202016%202020.csv) 
 
 ## Example Wählerwanderung DEU federal elections
 
@@ -46,12 +51,12 @@ Another example would be to use dataset about federal elections in Germany here 
 
 The data contains how many people voted in 2013 for one party and in 2017 for the same or another party. For example 11m people voted in 2013 for Union and also in 2017, 5,9m peopled voted in 2013 for SPD and also in 2017, while 800k people voted in 2013 for Union and changed to SPD in 2017, and 820k people changed from Union to SPD.
 
-- Download the dataset from the examples folder
-- Load the dataset to TIBCO Spotfire
-- Add a Sankey diagram and add `Stimmen` resp. `Sum(Stimmen)` to X axis 
-- Add `Bundestagswahl 2013` and `Bundestagswahl 2017` to the Y axis
-- Put `Bundestagswahl 2017` to colors 
-- Adjust the colors to the typical colors of the partys
+1. Download the dataset from the examples folder
+2. Load the dataset to TIBCO Spotfire
+3. Add a Sankey diagram and add `Stimmen` resp. `Sum(Stimmen)` to X axis 
+4. Add `Bundestagswahl 2013` and `Bundestagswahl 2017` to the Y axis
+5. Put `Bundestagswahl 2017` to colors 
+6. Adjust the colors to the typical colors of the partys
 
 <img src="https://github.com/hski-github/spotfire-sankey-diagram/blob/main/examples/DEU%20Bundestagswahl%20Waehlerwanderung%20Sankey%20Diagram.png?raw=true" width="70%">
 
