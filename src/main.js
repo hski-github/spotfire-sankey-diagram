@@ -269,6 +269,12 @@ Spotfire.initialize(async (mod) => {
 			var rowlabel = row.categorical("X").value();
 			var rowcolor = row.color().hexCode;
 			
+			var path = document.createElementNS("http://www.w3.org/2000/svg","path");
+			path.setAttribute("d", "");
+			path.setAttribute("style", "fill:" + rowcolor + ";");
+			path.setAttribute("row", j);
+			path.setAttribute("rowvalue", rowvalue); 
+
 			for(var i = 0; i < rowlabel.length; i++){
 				
 				var bar1 = bars[i];
@@ -293,50 +299,48 @@ Spotfire.initialize(async (mod) => {
 						"Z"
 					].join(" ");
 										
-					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
-					path.setAttribute("d", d);
-					path.setAttribute("style", "fill:" + rowcolor + ";");
-					path.setAttribute("row", j);
-					path.setAttribute("rowvalue", rowvalue); 
-					document.querySelector("#mod-svg-rows").append(path);
+					path.setAttribute("d", path.getAttribute("d") + " " + d);
 					
-					/** 
-					 * Marking
-					 */
-					path.onclick = function ( event ){
-						var rect = event.target;
-						var row = rows[rect.getAttribute("row")];
-						if (event.shiftKey) {
-							dataView.mark(new Array(row),"Add");
-						}
-						else {
-							dataView.mark(new Array(row),"Replace");
-						}
-					};
-					
-					/** 
-					 * Tool Tip
-					 */
-					path.onmouseover = function (event){
-						var row = rows[event.target.getAttribute("row")];
-
-						var yFormattedValue = row.continuous("Y").formattedValue();
-						var tooltip = yAxis.parts[0].displayName + ": " + yFormattedValue + "\r\n";
-						
-						var xValue = row.categorical("X").value();
-						for(var i = 0; i < xValue.length; i++){
-							tooltip += xAxis.parts[i].displayName + ": " + xValue[i].formattedValue() + "\r\n";
-						}
-						
-	                    mod.controls.tooltip.show(tooltip);
-					};
-					path.onmouseout = function (event){
-	                    mod.controls.tooltip.hide();
-					}
 					
 				}
 
 			}
+
+			/** 
+			 * Marking
+			 */
+			path.onclick = function ( event ){
+				var rect = event.target;
+				var row = rows[rect.getAttribute("row")];
+				if (event.shiftKey) {
+					dataView.mark(new Array(row),"Add");
+				}
+				else {
+					dataView.mark(new Array(row),"Replace");
+				}
+			};
+			
+			/** 
+			 * Tool Tip
+			 */
+			path.onmouseover = function (event){
+				var row = rows[event.target.getAttribute("row")];
+
+				var yFormattedValue = row.continuous("Y").formattedValue();
+				var tooltip = yAxis.parts[0].displayName + ": " + yFormattedValue + "\r\n";
+				
+				var xValue = row.categorical("X").value();
+				for(var i = 0; i < xValue.length; i++){
+					tooltip += xAxis.parts[i].displayName + ": " + xValue[i].formattedValue() + "\r\n";
+				}
+				
+                mod.controls.tooltip.show(tooltip);
+			};
+			path.onmouseout = function (event){
+                mod.controls.tooltip.hide();
+			}
+
+			document.querySelector("#mod-svg-rows").append(path);
 
 		});
 		
