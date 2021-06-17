@@ -65,7 +65,7 @@ The data contains how many people voted in 2013 for one party and in 2017 for th
 ## Open Topics 
 - Better layout of labels for category values https://github.com/hski-github/spotfire-sankey-diagram/issues/3
 - Currently the order of values is done alphabetically, as an alternative option could be sorted by highest value, but also custom order should be supported https://ideas.tibco.com/ideas/TS-I-8062
-- When hovering over bar segments, then the shown value is not formatted in the same way as defined for the continuous axis, but plain JavaScript value rendering. Here a new feature is required in the Spotfire mods framework is required. https://ideas.tibco.com/ideas/TS-I-8116
+- When hovering over bar segments, then the shown value is not formatted in the same way as defined for the continuous axis, but plain JavaScript value rendering. Here a new feature is required in the Spotfire mods framework. https://ideas.tibco.com/ideas/TS-I-8116
 
 ## References
 - https://cran.r-project.org/web/packages/alluvial/vignettes/alluvial.html
