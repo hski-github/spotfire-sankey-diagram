@@ -246,11 +246,12 @@ Spotfire.initialize(async (mod) => {
 					text.setAttribute("x", barsegment.x + barwidth + barsegmentlabelgap);
 					text.setAttribute("text-anchor", "start");
 				}
-				if ( barsegment.y < windowSize.height - barsegmentgap ){
+				if ( j < bars[i].barsegments.length -1 ){
 					text.setAttribute("baseline-shift", "-1em");
 					text.setAttribute("y", barsegment.y);
 				}
 				else {
+					text.setAttribute("baseline-shift", "0.2em");
 					text.setAttribute("y", windowSize.height);					
 				}
 				text.innerHTML = barsegment.label;
