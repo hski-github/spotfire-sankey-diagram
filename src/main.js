@@ -193,6 +193,19 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("barsegment", j);
 				document.querySelector("#mod-svg-bars").appendChild(rect);
 
+				/**
+				 * Create rect border for highlighting
+				 */
+				var highlight = document.createElementNS("http://www.w3.org/2000/svg","rect");
+				highlight.setAttribute("x", barsegment.x-3);
+				highlight.setAttribute("y", barsegment.y-3);
+				highlight.setAttribute("width", barwidth+6);
+				highlight.setAttribute("height", barsegment.value * heightscale+6);
+				highlight.setAttribute("style", "fill: none; stroke: black;");
+				highlight.setAttribute("bar", i);
+				highlight.setAttribute("barsegment", j);
+				highlight.setAttribute("visibility", "visible");
+				document.querySelector("#mod-svg-highlight").appendChild(highlight);
 				
 				/** 
 				 * Tool Tip
@@ -206,6 +219,11 @@ Spotfire.initialize(async (mod) => {
 						xAxis.parts[barid].displayName + ": " + barsegment.label;
 					
                     mod.controls.tooltip.show(tooltip);
+
+					debugger;
+					//TODO visible and hidden needs to be switch; current approach is just for test 
+					//TODO bugfix needed; because of namespace SVG is not found by querySelector
+					document.querySelector("rect[bar="+barid+"][barsegment="+barsegmentid+"]").setAttribute("visibility", "hidden");
 				};
 				rect.onmouseout = function (event){
                     mod.controls.tooltip.hide();
