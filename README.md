@@ -2,7 +2,7 @@
 
 Spotfire mods visualization for Sankey diagram resp. Alluvial diagrams in Spotfire. 
 
-Visualize many-to-many relationships between two or more categories or change of categories over time.
+Visualize relationships between two or more categories or change of categories over time.
 
 Sankey diagrams are visualizations used to show a flow from one set of values to another. Sankeys are best used when you want to show a many-to-many mapping between two or more categories (e.g. product categories, vendors and distribution channel) or multiple paths through a set of stages resp. change of categories over time (e.g. shift of votes over the last elections).
 
