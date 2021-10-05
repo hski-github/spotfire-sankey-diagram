@@ -115,8 +115,9 @@ Spotfire.initialize(async (mod) => {
 		/**
 		 * Define constansts
 		 */
-		const barwidth = 14;
-		const bargap = (windowSize.width - barwidth * (bars.length) ) / (bars.length - 1);
+		const barwidth = 15;
+		const barleftpadding = 5;
+		const bargap = (windowSize.width - barleftpadding - barwidth * (bars.length) ) / (bars.length - 1);
 
 		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
 		const barsegmentgap = windowSize.height * 0.1;
@@ -157,7 +158,7 @@ Spotfire.initialize(async (mod) => {
 			
 			bar.barsegments.forEach(function(barsegment, j){
 
-				barsegment.x = bargap * i;
+				barsegment.x = barleftpadding + bargap * i + barwidth * i;
 				barsegment.y = barheightcursor;
 
 				barsegment.rows.forEach(function(barsegmentrow, k){
