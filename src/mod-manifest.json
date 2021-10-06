@@ -25,14 +25,18 @@
                 "mode": "categorical",
                 "placement": "bottom",
                 "dropTarget": {
-                    "icon": "XAxis3D",
+                    "icon": "XAxis",
                     "description": "Use {0} on the mod's X-axis"
                 }
             },
             {
                 "name": "Y",
                 "mode": "continuous",
-                "placement": "left"
+                "placement": "left",
+                "dropTarget": {
+                    "icon": "YAxis",
+                    "description": "Use {0} on the mod's Y-axis"
+                }
             }
         ]
     },
