@@ -300,6 +300,7 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
 					path.setAttribute("rowvalue", rowvalue); 
+					path.setAttribute("marked", row.isMarked());
 					document.querySelector("#mod-svg-rows").append(path);
 					
 					/** 
@@ -353,7 +354,11 @@ Spotfire.initialize(async (mod) => {
   			return bvalue - avalue;
 		});
 		paths.forEach(function(path){
-  			document.querySelector("#mod-svg-rows").appendChild(path);
+			if ( path.getAttribute("marked") == "true" ){
+				document.querySelector("#mod-svg-rows-marked").appendChild(path);						
+			} else {
+				document.querySelector("#mod-svg-rows").appendChild(path);
+			}
 		});
 		
 			
