@@ -257,6 +257,9 @@ Spotfire.initialize(async (mod) => {
 				}
 				text.innerHTML = barsegment.label;
 				document.querySelector("#mod-svg-labels").appendChild(text);
+				if ( text.getBBox().height > barsegment.value * heightscale ){
+					text.setAttribute("visibility", "hidden");
+				}
 
 			});
 		});
