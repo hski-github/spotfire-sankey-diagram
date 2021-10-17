@@ -189,7 +189,7 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("y", barsegment.y);
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.value * heightscale);
-				rect.setAttribute("style", "fill: grey;");
+				rect.setAttribute("style", "fill: darkgrey;");
 				rect.setAttribute("bar", i);
 				rect.setAttribute("barsegment", j);
 				document.querySelector("#mod-svg-bars").appendChild(rect);
@@ -320,7 +320,8 @@ Spotfire.initialize(async (mod) => {
 						barsegment1.x + barwidth -2, barsegmentrow1.y + rowvalue * heightscale +2,
 						"Z"
 					].join(" "));
-					outlinewhitepath.setAttribute("style", "stroke: black; stroke-width: 1px; fill:none;");
+					var fontColor = mod.getRenderContext().styling.general.font.color;
+					outlinewhitepath.setAttribute("style", "stroke: " + fontColor + "; stroke-width: 1px; fill:none;");
 					outlinewhitepath.setAttribute("row", j);
 					outlinewhitepath.setAttribute("visibility", "hidden");
 					document.querySelector("#mod-svg-rows-outlines").append(outlinewhitepath);
