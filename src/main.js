@@ -116,12 +116,12 @@ Spotfire.initialize(async (mod) => {
 		 * Define constansts
 		 */
 		const barwidth = 15;
-		const barleftpadding = 5;
-		const bargap = (windowSize.width - barleftpadding - barwidth * (bars.length) ) / (bars.length - 1);
+		const svgpadding = 5;
+		const bargap = (windowSize.width - svgpadding - barwidth * (bars.length) ) / (bars.length - 1);
 
 		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
 		const barsegmentgap = windowSize.height * 0.1;
-		const heightscale = (windowSize.height - barsegmentgap) / bars[0].totalvalue;
+		const heightscale = (windowSize.height - barsegmentgap - 2 * svgpadding) / bars[0].totalvalue;
 
 		const barsegmentlabelgap = 3;
 		
@@ -154,11 +154,11 @@ Spotfire.initialize(async (mod) => {
 		 */
 		bars.forEach(function(bar, i){
 			
-			var barheightcursor = 0;
+			var barheightcursor = svgpadding;
 			
 			bar.barsegments.forEach(function(barsegment, j){
 
-				barsegment.x = barleftpadding + bargap * i + barwidth * i;
+				barsegment.x = svgpadding + bargap * i + barwidth * i;
 				barsegment.y = barheightcursor;
 
 				barsegment.rows.forEach(function(barsegmentrow, k){
@@ -253,7 +253,7 @@ Spotfire.initialize(async (mod) => {
 				}
 				else {
 					text.setAttribute("baseline-shift", "0.2em");
-					text.setAttribute("y", windowSize.height);					
+					text.setAttribute("y", windowSize.height - svgpadding);					
 				}
 				text.innerHTML = barsegment.label;
 				document.querySelector("#mod-svg-labels").appendChild(text);
@@ -342,7 +342,7 @@ Spotfire.initialize(async (mod) => {
 					};
 					
 					/** 
-					 * Tool Tip
+					 * Tool Tip and Trigger Outline
 					 */
 					path.onmouseover = function (event){
 						var j = event.target.getAttribute("row");
