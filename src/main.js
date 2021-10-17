@@ -247,7 +247,7 @@ Spotfire.initialize(async (mod) => {
 					text.setAttribute("x", barsegment.x + barwidth + barsegmentlabelgap);
 					text.setAttribute("text-anchor", "start");
 				}
-				if ( j < bars[i].barsegments.length -1 ){
+				if ( j < bars[i].barsegments.length - 1 ){
 					text.setAttribute("baseline-shift", "-1em");
 					text.setAttribute("y", barsegment.y);
 				}
@@ -257,7 +257,7 @@ Spotfire.initialize(async (mod) => {
 				}
 				text.innerHTML = barsegment.label;
 				document.querySelector("#mod-svg-labels").appendChild(text);
-				if ( text.getBBox().height > barsegment.value * heightscale ){
+				if ( text.getBBox().height > barsegment.value * heightscale + barsegmentgap / (bars[i].barsegments.length - 1) ){
 					text.setAttribute("visibility", "hidden");
 				}
 
