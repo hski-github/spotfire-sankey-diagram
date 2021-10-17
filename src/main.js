@@ -287,20 +287,21 @@ Spotfire.initialize(async (mod) => {
 					var barsegmentrow2 = barsegment2.rows.find( obj => { return obj.rowid === j });
 
 					var d = [
-						"M", barsegment1.x + barwidth, barsegmentrow1.y,
-						"C", barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y,
-						barsegment2.x - bargap / 4, barsegmentrow2.y,
-						barsegment2.x, barsegmentrow2.y,
-						"L", barsegment2.x, barsegmentrow2.y + rowvalue * heightscale, 
-						"C", barsegment2.x - bargap / 4, barsegmentrow2.y + rowvalue * heightscale, 
-						barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y + rowvalue * heightscale,
-						barsegment1.x + barwidth, barsegmentrow1.y + rowvalue * heightscale,
-						"Z"
+						"M", barsegment1.x + barwidth, barsegmentrow1.y + rowvalue / 2 * heightscale,
+						"C", barsegment1.x + barwidth + bargap / 2, barsegmentrow1.y + rowvalue / 2 * heightscale,
+						barsegment1.x + barwidth + bargap / 2, barsegmentrow2.y + rowvalue / 2 * heightscale,
+						barsegment2.x, barsegmentrow2.y + rowvalue / 2 * heightscale
 					].join(" ");
-										
+
+					var style = [
+						"fill: none",
+						"stroke: " + rowcolor,
+						"stroke-width: " + (rowvalue * heightscale)
+					].join(";");
+															
 					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
 					path.setAttribute("d", d);
-					path.setAttribute("style", "fill:" + rowcolor + ";");
+					path.setAttribute("style", style);
 					path.setAttribute("row", j);
 					path.setAttribute("rowvalue", rowvalue); 
 					path.setAttribute("marked", row.isMarked());
