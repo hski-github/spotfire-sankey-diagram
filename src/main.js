@@ -286,7 +286,8 @@ Spotfire.initialize(async (mod) => {
 					var barsegment2 = bar2.barsegments.find( obj => { return obj.label === rowlabel[i + 1].formattedValue() });
 					var barsegmentrow2 = barsegment2.rows.find( obj => { return obj.rowid === j });
 
-					var d = [
+					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
+					path.setAttribute("d", [
 						"M", barsegment1.x + barwidth, barsegmentrow1.y,
 						"C", barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y,
 						barsegment2.x - bargap / 4, barsegmentrow2.y,
@@ -296,10 +297,7 @@ Spotfire.initialize(async (mod) => {
 						barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y + rowvalue * heightscale,
 						barsegment1.x + barwidth, barsegmentrow1.y + rowvalue * heightscale,
 						"Z"
-					].join(" ");
-										
-					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
-					path.setAttribute("d", d);
+					].join(" "));
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
 					path.setAttribute("rowvalue", rowvalue); 
