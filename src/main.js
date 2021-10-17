@@ -345,11 +345,12 @@ Spotfire.initialize(async (mod) => {
 					 */
 					path.onmouseover = function (event){
 						var j = event.target.getAttribute("row");
-
-						outlinepaths = document.querySelectorAll("#mod-svg-rows-outlines > path[row='"+j+"']");
-						outlinepaths.forEach(function(outlinepath){
-							outlinepath.setAttribute("visibility", "visible");
-						});
+  						timeOut = setTimeout(() => {
+							outlinepaths = document.querySelectorAll("#mod-svg-rows-outlines > path[row='"+j+"']");
+							outlinepaths.forEach(function(outlinepath){
+								outlinepath.setAttribute("visibility", "visible");
+							});
+  						}, 600);
 
 						var row = rows[j];
 
@@ -366,7 +367,8 @@ Spotfire.initialize(async (mod) => {
 					};
 					path.onmouseout = function (event){
 						var j = event.target.getAttribute("row");
-
+						clearTimeout(timeOut);
+						
 						outlinepaths = document.querySelectorAll("#mod-svg-rows-outlines > path[row='"+j+"']");
 						outlinepaths.forEach(function(outlinepath){
 							outlinepath.setAttribute("visibility", "hidden");
