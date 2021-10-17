@@ -304,12 +304,34 @@ Spotfire.initialize(async (mod) => {
 					path.setAttribute("marked", row.isMarked());
 					document.querySelector("#mod-svg-rows").append(path);
 					
+					
+					/** 
+					 * Outline
+					 */
+					var outlinewhitepath = document.createElementNS("http://www.w3.org/2000/svg","path");
+					outlinewhitepath.setAttribute("d", [
+						"M", barsegment1.x + barwidth -2, barsegmentrow1.y -2,
+						"C", barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y -2,
+						barsegment2.x - bargap / 4, barsegmentrow2.y -2,
+						barsegment2.x +2, barsegmentrow2.y -2,
+						"L", barsegment2.x +2, barsegmentrow2.y + rowvalue * heightscale +2, 
+						"C", barsegment2.x - bargap / 4, barsegmentrow2.y + rowvalue * heightscale +2, 
+						barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y + rowvalue * heightscale +2,
+						barsegment1.x + barwidth -2, barsegmentrow1.y + rowvalue * heightscale +2,
+						"Z"
+					].join(" "));
+					outlinewhitepath.setAttribute("style", "stroke: black; stroke-width: 1px; fill:none;");
+					outlinewhitepath.setAttribute("row", j);
+					outlinewhitepath.setAttribute("visibility", "hidden");
+					document.querySelector("#mod-svg-rows-outlines").append(outlinewhitepath);
+					
+					
+				
 					/** 
 					 * Marking
 					 */
 					path.onclick = function ( event ){
-						var rect = event.target;
-						var row = rows[rect.getAttribute("row")];
+						var row = rows[event.target.getAttribute("row")];
 						if (event.shiftKey) {
 							dataView.mark(new Array(row),"Add");
 						}
@@ -322,7 +344,14 @@ Spotfire.initialize(async (mod) => {
 					 * Tool Tip
 					 */
 					path.onmouseover = function (event){
-						var row = rows[event.target.getAttribute("row")];
+						var j = event.target.getAttribute("row");
+
+						outlinepaths = document.querySelectorAll("#mod-svg-rows-outlines > path[row='"+j+"']");
+						outlinepaths.forEach(function(outlinepath){
+							outlinepath.setAttribute("visibility", "visible");
+						});
+
+						var row = rows[j];
 
 						var yFormattedValue = row.continuous("Y").formattedValue();
 						var tooltip = yAxis.parts[0].displayName + ": " + yFormattedValue + "\r\n";
@@ -333,8 +362,16 @@ Spotfire.initialize(async (mod) => {
 						}
 						
 	                    mod.controls.tooltip.show(tooltip);
+
 					};
 					path.onmouseout = function (event){
+						var j = event.target.getAttribute("row");
+
+						outlinepaths = document.querySelectorAll("#mod-svg-rows-outlines > path[row='"+j+"']");
+						outlinepaths.forEach(function(outlinepath){
+							outlinepath.setAttribute("visibility", "hidden");
+						});
+
 	                    mod.controls.tooltip.hide();
 					}
 					
