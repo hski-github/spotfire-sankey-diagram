@@ -247,7 +247,7 @@ Spotfire.initialize(async (mod) => {
 					text.setAttribute("x", barsegment.x + barwidth + barsegmentlabelgap);
 					text.setAttribute("text-anchor", "start");
 				}
-				if ( j < bars[i].barsegments.length - 1 ){
+				if ( bars[i].barsegments.length == 1 || j < bars[i].barsegments.length - 1 ){
 					text.setAttribute("baseline-shift", "-1em");
 					text.setAttribute("y", barsegment.y);
 				}
