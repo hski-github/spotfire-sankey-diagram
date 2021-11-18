@@ -116,12 +116,12 @@ Spotfire.initialize(async (mod) => {
 		 * Define constansts
 		 */
 		const barwidth = 15;
-		const barleftpadding = 5;
-		const bargap = (windowSize.width - barleftpadding - barwidth * (bars.length) ) / (bars.length - 1);
+		const svgpadding = 5;
+		const bargap = (windowSize.width - svgpadding - barwidth * (bars.length) ) / (bars.length - 1);
 
 		//TODO barsegmentgap should be look at max number of barsegments to ensure certain minimum space between segments 
 		const barsegmentgap = windowSize.height * 0.1;
-		const heightscale = (windowSize.height - barsegmentgap) / bars[0].totalvalue;
+		const heightscale = (windowSize.height - barsegmentgap - 2 * svgpadding) / bars[0].totalvalue;
 
 		const barsegmentlabelgap = 3;
 		
@@ -154,11 +154,11 @@ Spotfire.initialize(async (mod) => {
 		 */
 		bars.forEach(function(bar, i){
 			
-			var barheightcursor = 0;
+			var barheightcursor = svgpadding;
 			
 			bar.barsegments.forEach(function(barsegment, j){
 
-				barsegment.x = barleftpadding + bargap * i + barwidth * i;
+				barsegment.x = svgpadding + bargap * i + barwidth * i;
 				barsegment.y = barheightcursor;
 
 				barsegment.rows.forEach(function(barsegmentrow, k){
@@ -189,7 +189,7 @@ Spotfire.initialize(async (mod) => {
 				rect.setAttribute("y", barsegment.y);
 				rect.setAttribute("width", barwidth);
 				rect.setAttribute("height", barsegment.value * heightscale);
-				rect.setAttribute("style", "fill: grey;");
+				rect.setAttribute("style", "fill: darkgrey;");
 				rect.setAttribute("bar", i);
 				rect.setAttribute("barsegment", j);
 				document.querySelector("#mod-svg-bars").appendChild(rect);
@@ -253,7 +253,7 @@ Spotfire.initialize(async (mod) => {
 				}
 				else {
 					text.setAttribute("baseline-shift", "0.2em");
-					text.setAttribute("y", windowSize.height);					
+					text.setAttribute("y", windowSize.height - svgpadding);					
 				}
 				text.innerHTML = barsegment.label;
 				document.querySelector("#mod-svg-labels").appendChild(text);
@@ -286,7 +286,8 @@ Spotfire.initialize(async (mod) => {
 					var barsegment2 = bar2.barsegments.find( obj => { return obj.label === rowlabel[i + 1].formattedValue() });
 					var barsegmentrow2 = barsegment2.rows.find( obj => { return obj.rowid === j });
 
-					var d = [
+					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
+					path.setAttribute("d", [
 						"M", barsegment1.x + barwidth, barsegmentrow1.y,
 						"C", barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y,
 						barsegment2.x - bargap / 4, barsegmentrow2.y,
@@ -296,22 +297,42 @@ Spotfire.initialize(async (mod) => {
 						barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y + rowvalue * heightscale,
 						barsegment1.x + barwidth, barsegmentrow1.y + rowvalue * heightscale,
 						"Z"
-					].join(" ");
-										
-					var path = document.createElementNS("http://www.w3.org/2000/svg","path");
-					path.setAttribute("d", d);
+					].join(" "));
 					path.setAttribute("style", "fill:" + rowcolor + ";");
 					path.setAttribute("row", j);
 					path.setAttribute("rowvalue", rowvalue); 
 					path.setAttribute("marked", row.isMarked());
 					document.querySelector("#mod-svg-rows").append(path);
 					
+					
+					/** 
+					 * Outline
+					 */
+					var outlinewhitepath = document.createElementNS("http://www.w3.org/2000/svg","path");
+					outlinewhitepath.setAttribute("d", [
+						"M", barsegment1.x + barwidth -2, barsegmentrow1.y -2,
+						"C", barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y -2,
+						barsegment2.x - bargap / 4, barsegmentrow2.y -2,
+						barsegment2.x +2, barsegmentrow2.y -2,
+						"L", barsegment2.x +2, barsegmentrow2.y + rowvalue * heightscale +2, 
+						"C", barsegment2.x - bargap / 4, barsegmentrow2.y + rowvalue * heightscale +2, 
+						barsegment1.x + barwidth + bargap / 4, barsegmentrow1.y + rowvalue * heightscale +2,
+						barsegment1.x + barwidth -2, barsegmentrow1.y + rowvalue * heightscale +2,
+						"Z"
+					].join(" "));
+					var fontColor = mod.getRenderContext().styling.general.font.color;
+					outlinewhitepath.setAttribute("style", "stroke: " + fontColor + "; stroke-width: 1px; fill:none;");
+					outlinewhitepath.setAttribute("row", j);
+					outlinewhitepath.setAttribute("visibility", "hidden");
+					document.querySelector("#mod-svg-rows-outlines").append(outlinewhitepath);
+					
+					
+				
 					/** 
 					 * Marking
 					 */
 					path.onclick = function ( event ){
-						var rect = event.target;
-						var row = rows[rect.getAttribute("row")];
+						var row = rows[event.target.getAttribute("row")];
 						if (event.shiftKey) {
 							dataView.mark(new Array(row),"Add");
 						}
@@ -321,10 +342,18 @@ Spotfire.initialize(async (mod) => {
 					};
 					
 					/** 
-					 * Tool Tip
+					 * Tool Tip and Trigger Outline
 					 */
 					path.onmouseover = function (event){
-						var row = rows[event.target.getAttribute("row")];
+						var j = event.target.getAttribute("row");
+  						timeOut = setTimeout(() => {
+							outlinepaths = document.querySelectorAll("#mod-svg-rows-outlines > path[row='"+j+"']");
+							outlinepaths.forEach(function(outlinepath){
+								outlinepath.setAttribute("visibility", "visible");
+							});
+  						}, 600);
+
+						var row = rows[j];
 
 						var yFormattedValue = row.continuous("Y").formattedValue();
 						var tooltip = yAxis.parts[0].displayName + ": " + yFormattedValue + "\r\n";
@@ -335,8 +364,17 @@ Spotfire.initialize(async (mod) => {
 						}
 						
 	                    mod.controls.tooltip.show(tooltip);
+
 					};
 					path.onmouseout = function (event){
+						var j = event.target.getAttribute("row");
+						clearTimeout(timeOut);
+						
+						outlinepaths = document.querySelectorAll("#mod-svg-rows-outlines > path[row='"+j+"']");
+						outlinepaths.forEach(function(outlinepath){
+							outlinepath.setAttribute("visibility", "hidden");
+						});
+
 	                    mod.controls.tooltip.hide();
 					}
 					
